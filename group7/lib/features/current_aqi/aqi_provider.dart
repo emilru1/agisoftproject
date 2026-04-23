@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'aqi_model.dart';
 import 'aqi_repository.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:geocoding/geocoding.dart'; 
 
 class AqiProvider with ChangeNotifier {
   final AqiRepository _repository = AqiRepository();
@@ -13,7 +12,7 @@ class AqiProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
 
   // Set true to test functionality with mock data
-  final bool useMockLocation = true; 
+  final bool useMockLocation = false; 
 
   Future<void> refreshAqi() async {
     _isLoading = true;
@@ -22,13 +21,11 @@ class AqiProvider with ChangeNotifier {
     try {
       double lat;
       double lon;
-      String currentCity;
 
       if (useMockLocation) {
-        // Hard coded for San Francisco
-        lat = 37.757;
-        lon = -122.449;
-        currentCity = "San Francisco";
+        // Hard code values for city to test
+        lat = 28.613;
+        lon = 77.209;
         
         await Future.delayed(const Duration(seconds: 1)); 
 
@@ -38,36 +35,38 @@ class AqiProvider with ChangeNotifier {
         if (permission == LocationPermission.denied) {
           permission = await Geolocator.requestPermission();
           if (permission == LocationPermission.denied) {
-            throw Exception("GPS-acces denied");
+            throw Exception("GPS-access denied");
           }
         }
 
+        /*
+
+        Works bad when using web, use mock data instead
+
+        */
+
         print("Step 2: Fetch GPS-position...");
+  
         Position pos = await Geolocator.getCurrentPosition(
-          timeLimit: const Duration(seconds: 1),
+          desiredAccuracy: LocationAccuracy.low, 
+        ).timeout(
+          const Duration(seconds: 5),
+          onTimeout: () {
+            throw Exception("GPS-search took to much time (Timeout)");
+          },
         );
         lat = pos.latitude;
         lon = pos.longitude;
 
-        print(pos);
-
-        print("Step 3: Translate GPS to city name");
-        List<Placemark> placemarks = await placemarkFromCoordinates(lat, lon);
-        currentCity = placemarks.first.locality ?? "Unknowed City";
+        print("Koordinater hittade: $lat, $lon");
       }
 
-      // Either mock data or real data
-      print("Step 4: Fetch air quality from repository...");
+      print("Step 3: Fetch air quality from repository...");
       AqiModel apiData = await _repository.fetchAqi(lat, lon);
 
-      // Create updated model
-      _currentData = AqiModel(
-        aqi: apiData.aqi,
-        city: currentCity,
-        timestamp: DateTime.now(),
-      );
+      _currentData = apiData;
       
-      print("Step 5: Ok!");
+      print("Step 4: Ok! City founded API: ${_currentData?.city}");
 
     } catch (e) {
       print("Error: $e"); 

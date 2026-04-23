@@ -2,7 +2,6 @@ import "aqi_style.dart";
 
 
 // Homepage class, add more attributes to account for more data
-
 class AqiModel {
   final int aqi;
   final String city;
