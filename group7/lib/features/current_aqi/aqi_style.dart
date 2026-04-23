@@ -67,3 +67,4 @@ static AqiStyle fromAqi(int aqi) {
     }
 }
 
+}
