@@ -3,11 +3,19 @@ import "aqi_style.dart";
 
 // Homepage class, add more attributes to account for more data
 class AqiModel {
-  final int aqi;
+  final int general;
+  final int pm2_5;
+  final int pm10;
   final String city;
   final DateTime timestamp;
 
-  AqiModel({required this.aqi, required this.city, required this.timestamp});
+  AqiModel({
+    required this.general,
+    required this.pm2_5,  
+    required this.pm10,  
+    required this.city, 
+    required this.timestamp}
+  );
 
 
   /* 
@@ -19,14 +27,16 @@ class AqiModel {
 
   factory AqiModel.fromJson(Map<String, dynamic> json) {
     return AqiModel(
-      aqi: json["data"]["aqi"],
+      general: json["data"]["aqi"],
+      pm2_5: json["data"]["iaqi"]["pm25"]["v"],
+      pm10: json["data"]["iaqi"]["pm10"]["v"],
       city: json["data"]["city"]["name"],
       timestamp: DateTime.now(),
     );
   }
 
 
-  AqiStyle get style => AqiStyle.fromAqi(aqi);
+  AqiStyle get style => AqiStyle.fromAqi(general);
 
 
 

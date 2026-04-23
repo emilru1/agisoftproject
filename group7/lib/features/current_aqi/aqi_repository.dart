@@ -19,7 +19,6 @@ class AqiRepository {
 
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(response.body);
-
       if (jsonResponse['status'] == 'ok') {
         return AqiModel.fromJson(jsonResponse);
       } else {

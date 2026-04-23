@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:group7/core/widgets/pollutantText.dart';
 import 'package:provider/provider.dart';
 import 'aqi_provider.dart';
 
@@ -49,9 +50,14 @@ class CurrentAqiScreen extends StatelessWidget {
               Text(data.city, style: TextStyle(color: Colors.white, fontSize: 32)),
               Column(
                 children: [
-                  Text("${data.aqi}", style: TextStyle(color: Colors.white, fontSize: 100, fontWeight: FontWeight.bold)),
+                  Text("${data.general}", style: TextStyle(color: Colors.white, fontSize: 100, fontWeight: FontWeight.bold)),
                   Text(data.style.label, style: TextStyle(color: Colors.white, fontSize: 18)),
                   Text(data.style.description, style: TextStyle(color: Colors.white, fontSize: 12)),
+                  SizedBox(height: 30),
+                  PollutantText(value: data.pm2_5, subscript: "2.5"),
+                  SizedBox(height:8),
+                  PollutantText(value: data.pm10, subscript: "10" ),
+              
                 ],
               ),
               IconButton(
