@@ -14,7 +14,7 @@ class AqiRepository {
     // Return fake data¨
     
     return AqiModel(
-      aqi: 400, 
+      aqi: 60, 
       city: "", timestamp: 
       DateTime.now()
     );
