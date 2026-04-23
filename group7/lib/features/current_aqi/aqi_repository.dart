@@ -5,14 +5,14 @@ import 'aqi_model.dart';
 
 class AqiRepository {
 
-  Future<AqiModel> fetchAqi(double lat, double lon) async {
+  Future<AqiModel> _fetchAqi(String endpoint) async {
     final apiKey = dotenv.env['WAQI_API_KEY'];
     
     if (apiKey == null || apiKey.isEmpty) {
       throw Exception("API-key missing in .env-file");
     }
 
-    final url = Uri.parse('https://api.waqi.info/feed/geo:$lat;$lon/?token=$apiKey');
+    final url = Uri.parse('https://api.waqi.info/feed/$endpoint/?token=$apiKey');
 
     final response = await http.get(url);
 
@@ -28,6 +28,16 @@ class AqiRepository {
     } else {
       throw Exception("Could not connect. Status code: ${response.statusCode}");
     }
+  }
+
+  // Alternativ 1: Hämta via koordinater
+  Future<AqiModel> fetchAqiLatLon(double lat, double lon) {
+    return _fetchAqi('geo:$lat;$lon');
+  }
+
+  // Alternativ 2: Hämta via IP-adress (här)
+  Future<AqiModel> fetchAqiHere() {
+    return _fetchAqi('here');
   }
   
 }
