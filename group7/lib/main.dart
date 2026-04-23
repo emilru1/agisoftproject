@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:group7/features/current_aqi/aqi_provider.dart';
 import 'package:group7/features/current_aqi/current_aqi_screen.dart';
 
-void main() {
+Future<void> main() async {
+  
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await dotenv.load(fileName: ".env");
+
   runApp(
     ChangeNotifierProvider(
       create: (context) => AqiProvider(),
