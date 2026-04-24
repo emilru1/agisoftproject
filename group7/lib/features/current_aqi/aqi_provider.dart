@@ -24,8 +24,8 @@ class AqiProvider with ChangeNotifier {
 
       if (useMockLocation) {
         // Hard code values for city to test
-        lat = 28.613;
-        lon = 77.209;
+        lat = 26.760;
+        lon = 83.373;
         
         await Future.delayed(const Duration(seconds: 1)); 
 
@@ -42,12 +42,10 @@ class AqiProvider with ChangeNotifier {
       if(lat == null || lon == null ) {
         AqiModel apiData = await _repository.fetchAqiHere();
         _currentData = apiData;
-        print("Called from here");
       }
       else {
         AqiModel apiData = await _repository.fetchAqiLatLon(lat, lon);
         _currentData = apiData;
-        print("Called from lat lon");
       }
 
     } catch (e) {
