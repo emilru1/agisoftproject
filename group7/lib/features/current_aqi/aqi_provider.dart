@@ -12,7 +12,7 @@ class AqiProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
 
   // Set true to test functionality with mock data
-  final bool useMockLocation = false; 
+  final bool useMockLocation = true; 
 
   Future<void> refreshAqi() async {
     _isLoading = true;
