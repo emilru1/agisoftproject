@@ -40,11 +40,7 @@ class CurrentAqiScreen extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-<<<<<<< HEAD
-            colors: [data.style.color.withOpacity(0.2), data.style.color],
-=======
             colors: [data.style.color.withValues(alpha: 0.7), data.style.color],
->>>>>>> a434278d27b97c0db93ff82412ca457c2fc6c57e
           ),
         ),
         child: SafeArea(
