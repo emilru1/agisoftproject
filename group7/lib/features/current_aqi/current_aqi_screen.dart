@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:group7/core/widgets/pollutantText.dart';
 import 'package:provider/provider.dart';
 import 'aqi_provider.dart';
-
+import 'package:group7/core/navbar.dart';
 
 /*
 
@@ -18,12 +18,15 @@ class CurrentAqiScreen extends StatelessWidget {
     final aqiProvider = context.watch<AqiProvider>();
 
     if (aqiProvider.isLoading) {
-      return Scaffold(body: Center(child: CircularProgressIndicator()));
+      return Scaffold(
+        appBar: Navbar(),
+        body: Center(child: CircularProgressIndicator()));
     }
 
     final data = aqiProvider.currentData;
     if (data == null) {
       return Scaffold(
+        appBar: Navbar(),
         body: Center(
           child: ElevatedButton(
             onPressed: () => aqiProvider.refreshAqi(),
@@ -34,6 +37,7 @@ class CurrentAqiScreen extends StatelessWidget {
     }
 
     return Scaffold(
+      appBar: Navbar(),
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
