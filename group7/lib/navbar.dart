@@ -28,10 +28,12 @@ class _NavbarState extends State<Navbar> {
               });
             },
           )
-          : const Text(
+          : Text(
               "AirQualityTracker",
               style: TextStyle(color: Colors.black),
+              
             ),
+             
       actions: [
         IconButton(
           onPressed: () {
@@ -40,7 +42,14 @@ class _NavbarState extends State<Navbar> {
             });
           },
           icon: isSearching ? Icon(Icons.close) : Icon(Icons.search),
-        )
+        ),
+         if (!isSearching)IconButton(
+          onPressed: () {
+            setState(() {
+            });
+          },
+          icon: Icon(Icons.list),
+        ),
       ],
     );
   }
