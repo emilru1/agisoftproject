@@ -1,6 +1,8 @@
+// ignore_for_file: unused_field
+
 import 'package:flutter/material.dart';
-import 'package:group7/core/navbar.dart';
 import 'package:free_map/free_map.dart';
+
 
 
 class Navbar extends StatefulWidget implements PreferredSizeWidget {
@@ -14,24 +16,25 @@ class Navbar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _NavbarState extends State<Navbar> {
+
+  
   bool isSearching = false;
   FmData? _address;
-  LatLng? _currentPos;
+  LatLng? _currentPos = LatLng(37.4165849896396, -122.08051867783071); // temp
+
   bool _loading = false;
   bool _isOverlayVisible = false;
   late final MapController _mapController;
-  final _src = const LatLng(37.4165849896396, -122.08051867783071);
-  final _dest = const LatLng(37.420921119071586, -122.08535335958004);
 
   @override
   Widget build(BuildContext context) {
+
     return AppBar(
       backgroundColor: Colors.yellow,
-      title: isSearching
-          ?
+      title: isSearching?
           searchField
           : Text(
-              "AirQualityTracker",
+            "AirQualityTracker",
               style: TextStyle(color: Colors.black),
               
             ),
@@ -100,8 +103,6 @@ class _NavbarState extends State<Navbar> {
   /// GEOCODING: Get geocode from an address
   Future<void> getGeocode(String address) async {
     final data = await FmService().getGeocode(address: address);
-    //print(data);
-    //if (kDebugMode) print('${data?.lat},${data?.lng}');
   }
 }
 
