@@ -17,11 +17,11 @@ class _NavbarState extends State<Navbar> {
   bool isSearching = false;
   FmData? _address;
   LatLng? _currentPos;
-  //bool _loading = false;
-  // bool _isOverlayVisible = false;
-  // late final MapController _mapController;
-  // final _src = const LatLng(37.4165849896396, -122.08051867783071);
-  // final _dest = const LatLng(37.420921119071586, -122.08535335958004);
+  bool _loading = false;
+  bool _isOverlayVisible = false;
+  late final MapController _mapController;
+  final _src = const LatLng(37.4165849896396, -122.08051867783071);
+  final _dest = const LatLng(37.420921119071586, -122.08535335958004);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class _NavbarState extends State<Navbar> {
           ?
           searchField
           : Text(
-              _address!.address.toString(),
+              "AirQualityTracker",
               style: TextStyle(color: Colors.black),
               
             ),
