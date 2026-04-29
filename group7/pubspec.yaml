@@ -39,6 +39,7 @@ dependencies:
   geolocator: ^14.0.2
   geocoding: ^4.0.0
   flutter_dotenv: ^6.0.1
+  free_map: ^2.1.0
 
 
 

@@ -55,4 +55,21 @@ class AqiProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+
+  // Function used for search
+  Future<void> fetchAqiForCoordinates(double lat, double lon) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      AqiModel apiData = await _repository.fetchAqiLatLon(lat, lon);
+      _currentData = apiData;
+    } catch (e) {
+      print("Error: $e"); 
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 }
