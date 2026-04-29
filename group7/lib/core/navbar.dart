@@ -1,4 +1,6 @@
 // ignore_for_file: unused_field
+import 'package:provider/provider.dart';
+import 'package:group7/features/current_aqi/aqi_provider.dart';
 
 import 'package:flutter/material.dart';
 import 'package:free_map/free_map.dart';
@@ -95,12 +97,18 @@ class _NavbarState extends State<Navbar> {
   //  _address!.address.toString() To get the location
   void _onAddressSelected(FmData? data) {
     if (data == null) return;
-    _address = data;
-    _currentPos = LatLng(data.lat, data.lng);
-    //print(_currentPos);
-    //_mapController.move(_currentPos!, 12);
+    
+    // Uppdate if lat/lon is provided
+    setState(() {
+      _address = data;
+      _currentPos = LatLng(data.lat, data.lng);
+      isSearching = false; 
+    });
+    
+    // Send data to aqi_provider
+    context.read<AqiProvider>().fetchAqiForCoordinates(data.lat, data.lng);
   }
-  /// GEOCODING: Get geocode from an address
+  
   Future<void> getGeocode(String address) async {
     final data = await FmService().getGeocode(address: address);
   }
