@@ -4,8 +4,7 @@ import 'package:group7/features/current_aqi/aqi_provider.dart';
 
 import 'package:flutter/material.dart';
 import 'package:free_map/free_map.dart';
-
-
+import 'package:group7/theme/app_theme.dart';
 
 class Navbar extends StatefulWidget implements PreferredSizeWidget {
   const Navbar({super.key});
@@ -18,8 +17,6 @@ class Navbar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _NavbarState extends State<Navbar> {
-
-  
   bool isSearching = false;
   FmData? _address;
   LatLng? _currentPos = LatLng(37.4165849896396, -122.08051867783071); // temp
@@ -30,17 +27,25 @@ class _NavbarState extends State<Navbar> {
 
   @override
   Widget build(BuildContext context) {
-
     return AppBar(
-      backgroundColor: Colors.yellow,
-      title: isSearching?
-          searchField
-          : Text(
-            "AirQualityTracker",
-              style: TextStyle(color: Colors.black),
-              
+      backgroundColor: AppTheme.navBarColor,
+      title: isSearching
+          ? searchField
+          : Row(
+              children: [
+                Image.asset(
+                  'lib/assets/images/Logo3.png',
+                  height: 48,
+                  fit: BoxFit.contain,
+                  filterQuality: FilterQuality.high,
+                ),
+                const SizedBox(width: 12),
+                const Text(
+                  "AirQualityTracker",
+                  style: TextStyle(color: Colors.black),
+                ),
+              ],
             ),
-             
       actions: [
         IconButton(
           onPressed: () {
@@ -50,16 +55,17 @@ class _NavbarState extends State<Navbar> {
           },
           icon: isSearching ? Icon(Icons.close) : Icon(Icons.search),
         ),
-         if (!isSearching)IconButton(
-          onPressed: () {
-            setState(() {
-            });
-          },
-          icon: Icon(Icons.list),
-        ),
+        if (!isSearching)
+          IconButton(
+            onPressed: () {
+              setState(() {});
+            },
+            icon: Icon(Icons.list),
+          ),
       ],
     );
   }
+
   Widget get searchField {
     return Padding(
       padding: const EdgeInsets.all(20.0),
@@ -93,25 +99,23 @@ class _NavbarState extends State<Navbar> {
       ),
     );
   }
- 
+
   //  _address!.address.toString() To get the location
   void _onAddressSelected(FmData? data) {
     if (data == null) return;
-    
+
     // Uppdate if lat/lon is provided
     setState(() {
       _address = data;
       _currentPos = LatLng(data.lat, data.lng);
-      isSearching = false; 
+      isSearching = false;
     });
-    
+
     // Send data to aqi_provider
     context.read<AqiProvider>().fetchAqiForCoordinates(data.lat, data.lng);
   }
-  
+
   Future<void> getGeocode(String address) async {
     final data = await FmService().getGeocode(address: address);
   }
 }
-
-
