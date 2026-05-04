@@ -1,4 +1,5 @@
 // ignore_for_file: unused_field
+import 'package:group7/pages/help_page.dart';
 import 'package:provider/provider.dart';
 import 'package:group7/features/current_aqi/aqi_provider.dart';
 
@@ -43,6 +44,20 @@ class _NavbarState extends State<Navbar> {
                 const Text(
                   "AirQualityTracker",
                   style: TextStyle(color: Colors.black),
+                ),
+                TextButton.icon(
+                  icon: const Icon(Icons.help_sharp),
+                  label: const Text("Help", style: TextStyle(fontSize: 20)),
+                  style: TextButton.styleFrom(
+                    foregroundColor: const Color.fromARGB(255, 98, 181, 9),
+                  ),
+
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const HelpPage()),
+                    );
+                  },
                 ),
               ],
             ),
