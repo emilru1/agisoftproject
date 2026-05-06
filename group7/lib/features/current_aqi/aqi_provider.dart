@@ -8,6 +8,10 @@ class AqiProvider with ChangeNotifier {
   AqiModel? _currentData;
   bool _isLoading = false;
 
+  AqiProvider() {
+    refreshAqi();
+  }
+
   AqiModel? get currentData => _currentData;
   bool get isLoading => _isLoading;
 
