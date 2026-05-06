@@ -1,0 +1,1 @@
+Step 1: Do pip install django or pip3 install django
