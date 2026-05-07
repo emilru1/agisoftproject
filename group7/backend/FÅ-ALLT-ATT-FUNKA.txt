@@ -1,2 +1,21 @@
 Step 1: Do pip install django or pip3 install django
 Step 2: Do pip install psycopg2-binary or pip3 install psycopg2-binary
+Step 3: Install PostgreSQL and create a database called 'agileproject' with the password 
+'password' for the user 'postgres'. Correct password and project name are super important!
+Step 4: Write 
+    python manage.py makemigrations
+    python manage.py migrate
+or
+    python3 manage.py makemigrations
+    python3 manage.py migrate
+
+
+
+RELEVANT FILES FOR CHANGES:
+-backend/settings.py
+-agile/models.py
+-agile/urls.py
+-agile/views.py
+Other files do not need to be changed in most case :D
+
+The functions for the frontend are located in group7/lib/core/api-calls/http_requests.dart
