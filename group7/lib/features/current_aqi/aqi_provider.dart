@@ -19,23 +19,6 @@ class AqiProvider with ChangeNotifier {
 
 
 
-Future<void> testApi() async {
-  try {
-    final url = Uri.parse("http://127.0.0.1:8000/api/test/");
-
-    final response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      print(data["message"]);
-    } else {
-      print("Error: ${response.statusCode}");
-    }
-  } catch (e) {
-    print("Request failed: $e");
-  }
-}
-
   Future<void> refreshAqi() async {
     _isLoading = true;
     notifyListeners();
