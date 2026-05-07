@@ -9,6 +9,14 @@ or
     python3 manage.py makemigrations
     python3 manage.py migrate
 
+Step 5: To start the project open *TWO* terminals and write in the first one:
+    cd backend
+    python manage.py runserver
+or
+    python3 manage.py runserver
+And in 2nd one:
+    flutter run -d web-server
+
 
 
 RELEVANT FILES FOR CHANGES:
