@@ -1,1 +1,2 @@
 Step 1: Do pip install django or pip3 install django
+Step 2: Do pip install psycopg2-binary or pip3 install psycopg2-binary
