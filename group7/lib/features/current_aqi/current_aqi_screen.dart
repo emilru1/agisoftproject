@@ -134,7 +134,7 @@ class _CurrentAqiScreenState extends State<CurrentAqiScreen> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  context.read<AqiProvider>().testApi();
+                  //context.read<AqiProvider>().testApi();
                 },
                 child: const Text("Test Django API"),
               )
