@@ -1,11 +1,13 @@
 Step 1: Do pip install django or pip3 install django
 Step 2: Do pip install psycopg2-binary or pip3 install psycopg2-binary
 Step 3: Install PostgreSQL and create a database called 'agileproject' with the password 
-'password' for the user 'postgres'. Correct password and project name are super important!
+'password' for the user 'postgres'. Correct password and database name are super important!
 Step 4: Write 
+    cd backend
     python manage.py makemigrations
     python manage.py migrate
 or
+    cd backend
     python3 manage.py makemigrations
     python3 manage.py migrate
 
@@ -13,11 +15,10 @@ Step 5: To start the project open *TWO* terminals and write in the first one:
     cd backend
     python manage.py runserver
 or
+    cd backend
     python3 manage.py runserver
 And in 2nd one:
     flutter run -d web-server
-
-
 
 RELEVANT FILES FOR CHANGES:
 -backend/settings.py
