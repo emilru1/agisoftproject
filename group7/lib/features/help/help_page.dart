@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:group7/core/navbar.dart';
+import 'dart:convert';
 
+import 'help_information.dart';
 class HelpPage extends StatelessWidget {
   const HelpPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     const imagePath1 = 'lib/assets/images/Help_pic1.png';
-    const imagePath2 = 'lib/assets/images/Help_pic1.png';
-    const imagePath3 = 'lib/assets/images/Help_pic1.png';
-
+    const imagePath2 = 'lib/assets/images/particles.jpg';
+    const imagePath3 = 'lib/assets/images/ungoal3.png';
+    const imagePath4 = 'lib/assets/images/ungoal11.png';
+    final info = jsonDecode(helpJson);
     return Scaffold(
       appBar: const Navbar(),
       body: LayoutBuilder(
@@ -21,13 +24,12 @@ class HelpPage extends StatelessWidget {
               horizontal: sidePadding,
               vertical: 15,
             ),
-            child: const Column(
+            child: Column(
               children: [
                 _HelpSection(
                   imagePath: imagePath1,
                   title: 'Why use this application?',
-                  text:
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+                  text:info["why"],
                   imageOnLeft: true,
                 ),
 
@@ -37,17 +39,18 @@ class HelpPage extends StatelessWidget {
                   imagePath: imagePath2,
                   title: 'PM2.5 and PM10 and how it affects you?',
                   text:
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+                      info["pm2_5"]["description"]+info["pm2_5"]["short_risk"]+info["pm2_5"]["long_risk"] +"\n\n" +
+                      info["pm_10"]["description"]+info["pm_10"]["short_risk"]+info["pm_10"]["long_risk"],
                   imageOnLeft: false,
                 ),
 
                 SizedBox(height: 40),
 
                 _HelpSection(
-                  imagePath: imagePath3,
+                  imagePaths: [imagePath3,imagePath4],
                   title: 'UN climate goals',
                   text:
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+                      info["un"]["goal3"] + "\n\n" + info["un"]["goal11"],
                   imageOnLeft: true,
                 ),
               ],
@@ -60,13 +63,15 @@ class HelpPage extends StatelessWidget {
 }
 
 class _HelpSection extends StatelessWidget {
-  final String imagePath;
+  final String? imagePath;
+  final List<String>? imagePaths;
   final String title;
   final String text;
   final bool imageOnLeft;
 
   const _HelpSection({
-    required this.imagePath,
+    this.imagePath,
+    this.imagePaths,
     required this.title,
     required this.text,
     required this.imageOnLeft,
@@ -74,7 +79,31 @@ class _HelpSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final image = Image.asset(imagePath, height: 180, fit: BoxFit.contain);
+    Widget imageWidget;
+    // If multiple images exist
+    if (imagePaths != null) {
+      imageWidget = Row(
+        mainAxisSize: MainAxisSize.min,
+        children: imagePaths!
+            .map(
+              (path) => Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Image.asset(
+                  path,
+                  height: 180,
+                  fit: BoxFit.contain,
+                ),
+              ),
+            )
+            .toList(),
+      );
+    } else {
+      imageWidget = Image.asset(
+        imagePath!,
+        height: 180,
+        fit: BoxFit.contain,
+      );
+    }
 
     final textContent = Expanded(
       child: Column(
@@ -100,8 +129,8 @@ class _HelpSection extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: imageOnLeft
-          ? [image, const SizedBox(width: 40), textContent]
-          : [textContent, const SizedBox(width: 40), image],
+          ? [imageWidget, const SizedBox(width: 40), textContent]
+          : [textContent, const SizedBox(width: 40), imageWidget],
     );
   }
 }
