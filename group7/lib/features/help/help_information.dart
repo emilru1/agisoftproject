@@ -1,7 +1,7 @@
 const String helpJson = '''{
     "why": "This application helps you stay aware of the air you breathe every day. By tracking real-time air quality and pollution levels, it allows you to make safer and healthier choices for yourself, your family, and your daily activities. ",
     "pm2_5":{
-        "description" : "PM2.5 is aparticulate matter, where particles have an aerodynamic diameter equal to or less than 2.5 μm. ",
+        "description" : "PM2.5 is a particulate matter, where particles have an aerodynamic diameter equal to or less than 2.5 μm. ",
         "short_risk" : "Breathing in PM2.5 for short periods (up to a day) can irritate the lungs and heart. It may cause asthma attacks, coughing, breathing problems, and increase hospital visits, especially in children, older adults, and people with heart or lung conditions. ",
         "long_risk":"Long-term (months to years) exposure to PM2.5 has been linked to premature death, particularly in people who have chronic heart or lung diseases, and reduced lung function growth in children. ",
         "src":[
