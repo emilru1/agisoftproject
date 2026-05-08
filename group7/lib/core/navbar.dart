@@ -1,4 +1,6 @@
 // ignore_for_file: unused_field
+import 'package:group7/features/current_aqi/current_aqi_screen.dart';
+import 'package:group7/pages/help_page.dart';
 import 'package:provider/provider.dart';
 import 'package:group7/features/current_aqi/aqi_provider.dart';
 
@@ -39,10 +41,60 @@ class _NavbarState extends State<Navbar> {
                   fit: BoxFit.contain,
                   filterQuality: FilterQuality.high,
                 ),
-                const SizedBox(width: 12),
-                const Text(
-                  "AirQualityTracker",
-                  style: TextStyle(color: Colors.black),
+                Expanded(
+                  child: Center(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.black87,
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            textStyle: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CurrentAqiScreen(),
+                              ),
+                            );
+                          },
+                          child: const Text("Home"),
+                        ),
+                        const SizedBox(
+                          height: 32,
+                          child: VerticalDivider(
+                            color: Colors.black54,
+                            thickness: 1,
+                            width: 24,
+                          ),
+                        ),
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.black87,
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            textStyle: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const HelpPage(),
+                              ),
+                            );
+                          },
+                          child: const Text("Learn"),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
