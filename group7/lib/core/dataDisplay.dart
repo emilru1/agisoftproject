@@ -38,8 +38,6 @@ class _DatadisplayScreenState extends State<Datadisplay> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
 
-        
-
         const SizedBox(height: 20),
         Text("${data!.general}", style: TextStyle(fontSize: 100, fontWeight: FontWeight.bold)),
         Text(data.style.description, style: TextStyle(fontSize: 12), textAlign: TextAlign.center,),
