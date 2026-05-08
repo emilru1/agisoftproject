@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:group7/core/dataDisplay.dart';
+import 'package:group7/core/widgets/checkboxlist.dart';
 import 'package:group7/core/widgets/pollutantText.dart';
 import 'package:provider/provider.dart';
 import 'aqi_provider.dart';
@@ -35,7 +37,6 @@ class CurrentAqiScreen extends StatelessWidget {
         ),
       );
     }
-
     return Scaffold(
       appBar: Navbar(),
       body: Container(
@@ -49,19 +50,21 @@ class CurrentAqiScreen extends StatelessWidget {
         ),
         child: SafeArea(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(data.city, style: TextStyle(color: Colors.white, fontSize: 32),textAlign: TextAlign.center),
               Column(
                 children: [
-                  Text("${data.general}", style: TextStyle(color: Colors.white, fontSize: 100, fontWeight: FontWeight.bold)),
-                  Text(data.style.label, style: TextStyle(color: Colors.white, fontSize: 18)),
-                  Text(data.style.description, style: TextStyle(color: Colors.white, fontSize: 12), textAlign: TextAlign.center,),
-                  SizedBox(height: 30),
-                  PollutantText(value: data.pm2_5, subscript: "2.5"),
-                  SizedBox(height:8),
-                  PollutantText(value: data.pm10, subscript: "10" ),
-                  SizedBox(height: 40),
+                  Datadisplay(),
+                  //Text("${data.general}", style: TextStyle(color: Colors.white, fontSize: 100, fontWeight: FontWeight.bold)),
+                  //Text(data.style.label, style: TextStyle(color: Colors.white, fontSize: 18)),
+                  //Text(data.style.description, style: TextStyle(color: Colors.white, fontSize: 12), textAlign: TextAlign.center,),
+                  //SizedBox(height: 30),
+
+                  
+                  //SizedBox(height:8),
+                  //PollutantText(value: data.pm10, subscript: "10" ),
+                  //SizedBox(height: 40),
                   Text(data.threeDayForecast[0].date, style: TextStyle(color: Colors.white, fontSize: 24)),
                   SizedBox(
                     width:300,
