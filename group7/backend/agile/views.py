@@ -61,9 +61,17 @@ def fetch_users(request):
 
 
 def fetch_favourites(request):
-    favourites = UserFavourites.objects.all()
+    userid = request.GET.get("userid")
+
+    if not userid:
+        return JsonResponse({
+            "error": "userid required"
+        })
+
+    favourites = UserFavourites.objects.filter(userid=userid)
 
     data = []
+
     for fav in favourites:
         data.append({
             "id": fav.id,

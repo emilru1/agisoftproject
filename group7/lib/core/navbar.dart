@@ -1,5 +1,6 @@
 // ignore_for_file: unused_field
 
+import 'package:group7/core/widgets/favourite_page.dart';
 import 'package:provider/provider.dart';
 import 'package:group7/features/current_aqi/aqi_provider.dart';
 import 'package:flutter/material.dart';
@@ -36,26 +37,30 @@ class _NavbarState extends State<Navbar> {
     super.dispose();
   }
 
-  // ---------------------------
-  // CREATE USER FUNCTION
-  // ---------------------------
-  Future<void> createUser() async {
-    final username = usernameController.text.trim();
+Future<void> openFavourites() async {
+  final username = usernameController.text.trim();
 
-    if (username.isEmpty) return;
+  if (username.isEmpty) return;
 
-    try {
-      final result = await ApiService.createUser(username);
+  try {
+    final exists = await ApiService.checkUserExists(username);
 
-      setState(() {
-        userCreated = true;
-      });
-
-      print(result["message"]);
-    } catch (e) {
-      print("Error: $e");
+    if (!exists) {
+      await ApiService.createUser(username);
     }
+
+    if (!mounted) return;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => FavouritesPage(username: username),
+      ),
+    );
+  } catch (e) {
+    print("Error: $e");
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +110,7 @@ class _NavbarState extends State<Navbar> {
 
                 const SizedBox(width: 8),
 
-                ElevatedButton(onPressed: createUser, child: const Text("Add")),
+                ElevatedButton(onPressed: openFavourites, child: const Text("Favourites")),
 
                 const SizedBox(width: 8),
 
