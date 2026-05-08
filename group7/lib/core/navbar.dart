@@ -1,6 +1,7 @@
 // ignore_for_file: unused_field
 
 import 'package:group7/core/widgets/favourite_page.dart';
+import 'package:group7/features/user/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:group7/features/current_aqi/aqi_provider.dart';
 import 'package:flutter/material.dart';
@@ -51,6 +52,8 @@ Future<void> openFavourites() async {
 
     if (!mounted) return;
 
+
+  context.read<UserProvider>().setUsername(username);
     Navigator.push(
       context,
       MaterialPageRoute(

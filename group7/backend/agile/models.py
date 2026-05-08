@@ -8,6 +8,6 @@ class Users(models.Model):
 class UserFavourites(models.Model):
     id = models.AutoField(primary_key=True)
     userid = models.ForeignKey(Users, on_delete=models.CASCADE)
-    lat = models.CharField(max_length=10)
-    lon = models.CharField(max_length=10)
 
+    lat = models.FloatField()
+    lon = models.FloatField()
