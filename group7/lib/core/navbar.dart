@@ -1,10 +1,11 @@
 // ignore_for_file: unused_field
+
 import 'package:provider/provider.dart';
 import 'package:group7/features/current_aqi/aqi_provider.dart';
-
 import 'package:flutter/material.dart';
 import 'package:free_map/free_map.dart';
 import 'package:group7/theme/app_theme.dart';
+import 'package:group7/api-calls/http_requests.dart';
 
 class Navbar extends StatefulWidget implements PreferredSizeWidget {
   const Navbar({super.key});
@@ -18,17 +19,52 @@ class Navbar extends StatefulWidget implements PreferredSizeWidget {
 
 class _NavbarState extends State<Navbar> {
   bool isSearching = false;
+
   FmData? _address;
   LatLng? _currentPos = LatLng(37.4165849896396, -122.08051867783071); // temp
+
+  final TextEditingController usernameController = TextEditingController();
+  bool userCreated = false;
 
   bool _loading = false;
   bool _isOverlayVisible = false;
   late final MapController _mapController;
 
   @override
+  void dispose() {
+    usernameController.dispose();
+    super.dispose();
+  }
+
+  // ---------------------------
+  // CREATE USER FUNCTION
+  // ---------------------------
+  Future<void> createUser() async {
+    final username = usernameController.text.trim();
+
+    if (username.isEmpty) return;
+
+    try {
+      final result = await ApiService.createUser(username);
+
+      setState(() {
+        userCreated = true;
+      });
+
+      print(result["message"]);
+    } catch (e) {
+      print("Error: $e");
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: AppTheme.navBarColor,
+
+      // ---------------------------
+      // TITLE AREA (FREE MAP + USER INPUT)
+      // ---------------------------
       title: isSearching
           ? searchField
           : Row(
@@ -44,8 +80,46 @@ class _NavbarState extends State<Navbar> {
                   "AirQualityTracker",
                   style: TextStyle(color: Colors.black),
                 ),
+
+                const SizedBox(width: 20),
+
+                // ---------------------------
+                // TEST USER INPUT (DATABASE)
+                // ---------------------------
+                SizedBox(
+                  width: 140,
+                  height: 40,
+                  child: TextField(
+                    controller: usernameController,
+                    decoration: const InputDecoration(
+                      hintText: "username",
+                      isDense: true,
+                      border: OutlineInputBorder(),
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 8,
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(width: 8),
+
+                ElevatedButton(onPressed: createUser, child: const Text("Add")),
+
+                const SizedBox(width: 8),
+
+                if (userCreated)
+                  const Text(
+                    "Created ✅",
+                    style: TextStyle(color: Colors.green, fontSize: 12),
+                  ),
               ],
             ),
+
+      // ---------------------------
+      // ACTION BUTTONS
+      // ---------------------------
       actions: [
         IconButton(
           onPressed: () {
@@ -66,6 +140,9 @@ class _NavbarState extends State<Navbar> {
     );
   }
 
+  // ---------------------------
+  // FREE MAP SEARCH (UNCHANGED)
+  // ---------------------------
   Widget get searchField {
     return Padding(
       padding: const EdgeInsets.all(20.0),
@@ -100,18 +177,18 @@ class _NavbarState extends State<Navbar> {
     );
   }
 
-  //  _address!.address.toString() To get the location
+  // ---------------------------
+  // ADDRESS SELECT
+  // ---------------------------
   void _onAddressSelected(FmData? data) {
     if (data == null) return;
 
-    // Uppdate if lat/lon is provided
     setState(() {
       _address = data;
       _currentPos = LatLng(data.lat, data.lng);
       isSearching = false;
     });
 
-    // Send data to aqi_provider
     context.read<AqiProvider>().fetchAqiForCoordinates(data.lat, data.lng);
   }
 

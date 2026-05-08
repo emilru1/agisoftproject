@@ -5,9 +5,7 @@ class ApiService {
   static const String baseUrl = "http://10.0.2.2:8000";
 
   static Future<List<dynamic>> fetchUsers() async {
-    final response = await http.get(
-      Uri.parse("$baseUrl/fetchusers/"),
-    );
+    final response = await http.get(Uri.parse("$baseUrl/fetchusers/"));
 
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
@@ -37,6 +35,19 @@ class ApiService {
       return jsonDecode(response.body);
     } else {
       throw Exception("Failed to fetch favourites");
+    }
+  }
+
+  static Future<bool> checkUserExists(String username) async {
+    final response = await http.get(
+      Uri.parse("$baseUrl/checkuser/?username=$username"),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data["exists"];
+    } else {
+      throw Exception("Failed to check user");
     }
   }
 

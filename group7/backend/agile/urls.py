@@ -4,11 +4,13 @@ from .views import create_user
 from .views import create_favourite
 from .views import fetch_users
 from .views import fetch_favourites
+from group7.backend.agile import views
 
 urlpatterns = [
     path("api/test/", test_api),
     path("api/createuser", create_user),
     path("api/createfavourite", create_favourite),
     path("api/fetchusers", fetch_users),
-    path("api/fetchfavourites", fetch_favourites)
+    path("api/fetchfavourites", fetch_favourites),
+    path("checkuser/", views.check_user)
 ]

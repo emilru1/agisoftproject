@@ -73,3 +73,15 @@ def fetch_favourites(request):
         })
 
     return JsonResponse(data, safe=False)
+
+def check_user(request):
+    username = request.GET.get("username")
+
+    if not username:
+        return JsonResponse({"error": "username is required"})
+
+    exists = Users.objects.filter(username=username).exists()
+
+    return JsonResponse({
+        "exists": exists
+    })
