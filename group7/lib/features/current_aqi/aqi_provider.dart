@@ -5,7 +5,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-
 class AqiProvider with ChangeNotifier {
   final AqiRepository _repository = AqiRepository();
 
@@ -16,8 +15,6 @@ class AqiProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
 
   final bool useMockLocation = true;
-
-
 
   Future<void> refreshAqi() async {
     _isLoading = true;
@@ -33,8 +30,7 @@ class AqiProvider with ChangeNotifier {
 
         await Future.delayed(const Duration(seconds: 1));
       } else {
-        LocationPermission permission =
-            await Geolocator.checkPermission();
+        LocationPermission permission = await Geolocator.checkPermission();
 
         if (permission == LocationPermission.denied) {
           permission = await Geolocator.requestPermission();
@@ -48,10 +44,8 @@ class AqiProvider with ChangeNotifier {
       if (lat == null || lon == null) {
         _currentData = await _repository.fetchAqiHere();
       } else {
-        _currentData =
-            await _repository.fetchAqiLatLon(lat, lon);
+        _currentData = await _repository.fetchAqiLatLon(lat, lon);
       }
-
     } catch (e) {
       print("Error: $e");
     } finally {
@@ -65,8 +59,7 @@ class AqiProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      _currentData =
-          await _repository.fetchAqiLatLon(lat, lon);
+      _currentData = await _repository.fetchAqiLatLon(lat, lon);
     } catch (e) {
       print("Error: $e");
     } finally {

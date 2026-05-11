@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:group7/api-calls/http_requests.dart';
 import 'package:group7/core/dataDisplay.dart';
 import 'package:provider/provider.dart';
-
 import 'aqi_provider.dart';
 import 'package:group7/core/widgets/pollutantText.dart';
 import 'package:group7/core/navbar.dart';
+import 'package:group7/features/user/user_provider.dart';
 
 
 class CurrentAqiScreen extends StatefulWidget {
-  const CurrentAqiScreen({super.key});
+  final double? lat;
+  final double? lon;
+
+  const CurrentAqiScreen({
+    super.key,
+    this.lat,
+    this.lon,
+  });
 
   @override
   State<CurrentAqiScreen> createState() => _CurrentAqiScreenState();
@@ -20,8 +28,14 @@ class _CurrentAqiScreenState extends State<CurrentAqiScreen> {
   void initState() {
     super.initState();
 
-    Future.microtask(() {
-      context.read<AqiProvider>().refreshAqi();
+    Future.microtask(() async {
+      if (widget.lat != null && widget.lon != null) {
+        await context
+            .read<AqiProvider>()
+            .fetchAqiForCoordinates(widget.lat!, widget.lon!);
+      } else {
+        await context.read<AqiProvider>().refreshAqi();
+      }
     });
   }
 
@@ -111,10 +125,45 @@ class _CurrentAqiScreenState extends State<CurrentAqiScreen> {
                 onPressed: () => aqiProvider.refreshAqi(),
               ),
               ElevatedButton(
-                onPressed: () {
-                  //context.read<AqiProvider>().testApi();
+                onPressed: () async {
+                  final username = context.read<UserProvider>().username;
+
+                  if (username == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("No user selected"),
+                      ),
+                    );
+                    return;
+                  }
+
+                  try {
+                    final result = await ApiService.createFavourite(
+                      username: username,
+                      lat: data.lat.toString(),
+                      lon: data.lon.toString(),
+                    );
+
+                    print(result);
+
+                    if (!context.mounted) return;
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Favourite added"),
+                      ),
+                    );
+                  } catch (e) {
+                    print(e);
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Error: $e"),
+                      ),
+                    );
+                  }
                 },
-                child: const Text("Test Django API"),
+                child: const Text("Add to favourites"),
               )
             ],
           ),

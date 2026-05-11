@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:group7/features/user/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -11,11 +12,18 @@ Future<void> main() async {
   await dotenv.load(fileName: ".env");
 
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => AqiProvider(),
-      child: const MyApp(),
-    ),
-  );
+  MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+        create: (_) => AqiProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => UserProvider(),
+      ),
+    ],
+    child: const MyApp(),
+  ),
+);
 }
 
 class MyApp extends StatelessWidget {
@@ -26,9 +34,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'AQI App',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-      ),
+      theme: ThemeData(useMaterial3: true),
       home: const CurrentAqiScreen(),
     );
   }

@@ -23,13 +23,19 @@ class AqiModel {
   final DateTime timestamp;
   final List<ForecastDay> threeDayForecast;
 
+  final double lat;
+  final double lon;
+
   AqiModel({
     required this.general,
     required this.pm2_5,  
     required this.pm10,  
     required this.city, 
     required this.timestamp,
-    required this.threeDayForecast}
+    required this.threeDayForecast,
+    required this.lat,
+    required this.lon
+    }
   );
 
 
@@ -41,15 +47,17 @@ class AqiModel {
   */
 
   factory AqiModel.fromJson(Map<String, dynamic> json) {
-    return AqiModel(
-      general: json["data"]["aqi"],
-      pm2_5: json["data"]["iaqi"]["pm25"]["v"],
-      pm10: json["data"]["iaqi"]["pm10"]["v"],
-      city: json["data"]["city"]["name"],
-      timestamp: DateTime.now(),
-      threeDayForecast : getForecastFromJson(json),
-    );
-  }
+  return AqiModel(
+    general: json["data"]["aqi"],
+    pm2_5: json["data"]["iaqi"]["pm25"]["v"],
+    pm10: json["data"]["iaqi"]["pm10"]["v"],
+    city: json["data"]["city"]["name"],
+    timestamp: DateTime.now(),
+    lat: json["data"]["city"]["geo"][0].toDouble(),
+    lon: json["data"]["city"]["geo"][1].toDouble(),
+    threeDayForecast: getForecastFromJson(json),
+  );
+}
 
   ///Extracts Forecast based on API [json] response
   static List<ForecastDay> getForecastFromJson(Map<String, dynamic> json) {
