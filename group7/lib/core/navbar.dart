@@ -1,12 +1,8 @@
-// ignore_for_file: unused_field
-<<<<<<< HEAD
 
 import 'package:group7/core/widgets/favourite_page.dart';
 import 'package:group7/features/user/user_provider.dart';
-=======
 import 'package:group7/features/current_aqi/current_aqi_screen.dart';
 import 'package:group7/features/help/help_page.dart';
->>>>>>> main
 import 'package:provider/provider.dart';
 import 'package:group7/features/current_aqi/aqi_provider.dart';
 import 'package:flutter/material.dart';

@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 import 'package:group7/api-calls/http_requests.dart';
-=======
 import 'package:group7/core/dataDisplay.dart';
->>>>>>> main
 import 'package:provider/provider.dart';
-
 import 'aqi_provider.dart';
 import 'package:group7/core/widgets/pollutantText.dart';
 import 'package:group7/core/navbar.dart';
