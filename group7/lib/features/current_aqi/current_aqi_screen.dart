@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:group7/api-calls/http_requests.dart';
+=======
+import 'package:group7/core/dataDisplay.dart';
+>>>>>>> main
 import 'package:provider/provider.dart';
 
 import 'aqi_provider.dart';
@@ -64,7 +68,6 @@ class _CurrentAqiScreenState extends State<CurrentAqiScreen> {
         ),
       );
     }
-
     return Scaffold(
       appBar: Navbar(),
       body: Container(
@@ -81,7 +84,7 @@ class _CurrentAqiScreenState extends State<CurrentAqiScreen> {
         ),
         child: SafeArea(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
                 data.city,
@@ -91,29 +94,7 @@ class _CurrentAqiScreenState extends State<CurrentAqiScreen> {
 
               Column(
                 children: [
-                  Text(
-                    "${data.general}",
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 100,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    data.style.label,
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                  Text(
-                    data.style.description,
-                    style: const TextStyle(color: Colors.white, fontSize: 12),
-                    textAlign: TextAlign.center,
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  PollutantText(value: data.pm2_5, subscript: "2.5"),
-                  const SizedBox(height: 8),
-                  PollutantText(value: data.pm10, subscript: "10"),
+                  Datadisplay(),
 
                   const SizedBox(height: 40),
 
