@@ -111,7 +111,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
                           if (!context.mounted) return;
 
                          Navigator.push(
-                          context,
+                          context, 
                           MaterialPageRoute(
                             builder: (_) => CurrentAqiScreen(
                               lat: fav.lat,
