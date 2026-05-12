@@ -80,66 +80,138 @@ class _CurrentAqiScreenState extends State<CurrentAqiScreen> {
           ),
         ),
         child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                data.city,
-                style: const TextStyle(color: Colors.white, fontSize: 32),
-                textAlign: TextAlign.center,
-              ),
+          child: SingleChildScrollView(
+            child: LayoutBuilder(
+              builder: (context,constraints) {
 
-             
-              Datadisplay(),
-              AqiForecastWidget(forecastData: data.threeDayForecast),
-                
+                bool isWideEnough = constraints.maxWidth >1200;
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      data.city,
+                      style: const TextStyle(color: Colors.white, fontSize: 32),
+                      textAlign: TextAlign.center,
+                    ),
 
-              IconButton(
-                icon: const Icon(Icons.refresh, color: Colors.white, size: 40),
-                onPressed: () => aqiProvider.refreshAqi(),
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  final username = context.read<UserProvider>().username;
+                    if(isWideEnough)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            children: [
+                            Datadisplay(),
+                            IconButton(
+                              icon: const Icon(Icons.refresh, color: Colors.white, size: 40),
+                              onPressed: () => aqiProvider.refreshAqi(),
+                            ),
+                            ElevatedButton(
+                              onPressed: () async {
+                                final username = context.read<UserProvider>().username;
+                        
+                                if (username == null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text("No user selected"),
+                                    ),
+                                  );
+                                  return;
+                                }
+                        
+                                try {
+                                  final result = await ApiService.createFavourite(
+                                    username: username,
+                                    lat: data.lat.toString(),
+                                    lon: data.lon.toString(),
+                                  );
+                        
+                                  print(result);
+                        
+                                  if (!context.mounted) return;
+                        
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text("Favourite added"),
+                                    ),
+                                  );
+                                } catch (e) {
+                                  print(e);
+                        
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text("Error: $e"),
+                                    ),
+                                  );
+                                }
+                              },
+                              child: const Text("Add to favourites"),
+                            ),
+                          ],
+                          ),
+                          SizedBox(width: 80,),
+                          AqiForecastWidget(forecastData: data.threeDayForecast),
+                        ],
+                      )
+                    else
+                      Column(
+                        children: [
+                            Datadisplay(),
+                            IconButton(
+                              icon: const Icon(Icons.refresh, color: Colors.white, size: 40),
+                              onPressed: () => aqiProvider.refreshAqi(),
+                            ),
+                            ElevatedButton(
+                              onPressed: () async {
+                                final username = context.read<UserProvider>().username;
+                        
+                                if (username == null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text("No user selected"),
+                                    ),
+                                  );
+                                  return;
+                                }
+                        
+                                try {
+                                  final result = await ApiService.createFavourite(
+                                    username: username,
+                                    lat: data.lat.toString(),
+                                    lon: data.lon.toString(),
+                                  );
+                        
+                                  print(result);
+                        
+                                  if (!context.mounted) return;
+                        
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text("Favourite added"),
+                                    ),
+                                  );
+                                } catch (e) {
+                                  print(e);
+                        
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text("Error: $e"),
+                                    ),
+                                  );
+                                }
+                              },
+                              child: const Text("Add to favourites"),
+                            ),
+                          SizedBox(height: 24,),
 
-                  if (username == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("No user selected"),
+                          AqiForecastWidget(forecastData: data.threeDayForecast),
+
+                        ],
+
                       ),
-                    );
-                    return;
-                  }
-
-                  try {
-                    final result = await ApiService.createFavourite(
-                      username: username,
-                      lat: data.lat.toString(),
-                      lon: data.lon.toString(),
-                    );
-
-                    print(result);
-
-                    if (!context.mounted) return;
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("Favourite added"),
-                      ),
-                    );
-                  } catch (e) {
-                    print(e);
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("Error: $e"),
-                      ),
-                    );
-                  }
-                },
-                child: const Text("Add to favourites"),
-              )
-            ],
+                  ],
+                );
+              }
+            ),
           ),
         ),
       ),

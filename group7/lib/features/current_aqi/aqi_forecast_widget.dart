@@ -46,7 +46,7 @@ class AqiForecastWidget extends StatelessWidget {
 
   Widget _buildForecastDay(dynamic forecast) {
     String weekday = _getWeekdayName(forecast.date);
-    AqiStyle style = AqiStyle.fromAqi(forecast.pm2_5.avg);
+    AqiStyle style = AqiStyle.fromAqi(forecast.pm2_5.max);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       padding: const EdgeInsets.all(16),
@@ -100,7 +100,7 @@ class AqiForecastWidget extends StatelessWidget {
               SizedBox(height: 8,),
               Row(
                 children: [
-                  Expanded(child:_buildCol("2_5", forecast.pm10)),
+                  Expanded(child:_buildCol("2_5", forecast.pm2_5)),
                   
       
                   Container(
