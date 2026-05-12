@@ -6,6 +6,7 @@ import 'aqi_provider.dart';
 import 'package:group7/core/widgets/pollutantText.dart';
 import 'package:group7/core/navbar.dart';
 import 'package:group7/features/user/user_provider.dart';
+import 'aqi_forecast_widget.dart';
 
 
 class CurrentAqiScreen extends StatefulWidget {
@@ -88,37 +89,10 @@ class _CurrentAqiScreenState extends State<CurrentAqiScreen> {
                 textAlign: TextAlign.center,
               ),
 
-              Column(
-                children: [
-                  Datadisplay(),
-
-                  const SizedBox(height: 40),
-
-                  Text(
-                    data.threeDayForecast[0].date,
-                    style: const TextStyle(color: Colors.white, fontSize: 24),
-                  ),
-
-                  const SizedBox(
-                    width: 300,
-                    child: Divider(color: Colors.white, thickness: 2),
-                  ),
-
-                  const SizedBox(height: 12),
-
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(
-                      children: [
-                        _buildForecastDay(data.threeDayForecast[1]),
-                        _buildForecastDay(data.threeDayForecast[2]),
-                        _buildForecastDay(data.threeDayForecast[3]),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+             
+              Datadisplay(),
+              AqiForecastWidget(forecastData: data.threeDayForecast),
+                
 
               IconButton(
                 icon: const Icon(Icons.refresh, color: Colors.white, size: 40),
@@ -171,31 +145,4 @@ class _CurrentAqiScreenState extends State<CurrentAqiScreen> {
       ),
     );
   }
-}
-
-Widget _buildForecastDay(dynamic forecast) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 12),
-    child: Column(
-      children: [
-        Text(
-          forecast.date,
-          style: const TextStyle(color: Colors.white, fontSize: 20),
-        ),
-        _buildMetricRow("Avg", forecast.pm2_5.avg, forecast.pm10.avg),
-        _buildMetricRow("Max", forecast.pm2_5.max, forecast.pm10.max),
-        _buildMetricRow("Min", forecast.pm2_5.min, forecast.pm10.min),
-      ],
-    ),
-  );
-}
-
-Widget _buildMetricRow(String label, dynamic pm25, dynamic pm10) {
-  return Row(
-    children: [
-      Text("$label: ", style: const TextStyle(color: Colors.white70)),
-      PollutantText(value: pm25, subscript: "2.5"),
-      PollutantText(value: pm10, subscript: "10"),
-    ],
-  );
 }
