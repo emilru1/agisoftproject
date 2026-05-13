@@ -1,4 +1,4 @@
-
+// ignore_for_file: unused_field
 import 'package:group7/core/widgets/favourite_page.dart';
 import 'package:group7/features/user/user_provider.dart';
 import 'package:group7/features/current_aqi/current_aqi_screen.dart';
@@ -11,27 +11,24 @@ import 'package:group7/theme/app_theme.dart';
 import 'package:group7/api-calls/http_requests.dart';
 
 class Navbar extends StatefulWidget implements PreferredSizeWidget {
-  const Navbar({super.key});
+  final String activePage;
+
+  const Navbar({super.key, this.activePage = ''});
 
   @override
   State<Navbar> createState() => _NavbarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(60);
+  Size get preferredSize => const Size.fromHeight(80); 
 }
 
 class _NavbarState extends State<Navbar> {
-  bool isSearching = false;
-
   FmData? _address;
-  LatLng? _currentPos = LatLng(37.4165849896396, -122.08051867783071); // temp
+  LatLng? _currentPos = LatLng(37.4165849896396, -122.08051867783071);
 
   final TextEditingController usernameController = TextEditingController();
   bool userCreated = false;
-
-  bool _loading = false;
   bool _isOverlayVisible = false;
-  late final MapController _mapController;
 
   @override
   void dispose() {
@@ -39,172 +36,130 @@ class _NavbarState extends State<Navbar> {
     super.dispose();
   }
 
-Future<void> openFavourites() async {
-  final username = usernameController.text.trim();
+  Future<void> openFavourites() async {
+    final username = usernameController.text.trim();
 
-  if (username.isEmpty) return;
+    if (username.isEmpty) return;
 
-  try {
-    final exists = await ApiService.checkUserExists(username);
+    try {
+      final exists = await ApiService.checkUserExists(username);
+      if (!exists) {
+        await ApiService.createUser(username);
+      }
+      if (!mounted) return;
 
-    if (!exists) {
-      await ApiService.createUser(username);
+      context.read<UserProvider>().setUsername(username);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => FavouritesPage(username: username),
+        ),
+      );
+    } catch (e) {
+      print("Error: $e");
     }
-
-    if (!mounted) return;
-
-
-  context.read<UserProvider>().setUsername(username);
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => FavouritesPage(username: username),
-      ),
-    );
-  } catch (e) {
-    print("Error: $e");
   }
-}
+
+  
+  void _onAddressSelected(FmData? data) {
+    if (data == null) return;
+    setState(() {
+      _address = data;
+      _currentPos = LatLng(data.lat, data.lng);
+    });
+    context.read<AqiProvider>().fetchAqiForCoordinates(data.lat, data.lng);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: AppTheme.navBarColor,
-
-      // ---------------------------
-      // TITLE AREA (FREE MAP + USER INPUT)
-      // ---------------------------
-      title: isSearching
-          ? searchField
-          : Row(
+    return Container(
+      margin: const EdgeInsets.fromLTRB(20, 10, 20, 0), 
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20), bottom: Radius.circular(20)), // Runda hörn
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 15,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: SafeArea(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width - 88), 
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Image.asset(
-                  'lib/assets/images/Logo3.png',
-                  height: 48,
+                  'lib/assets/images/Logo2.png',
+                  height: 40,
                   fit: BoxFit.contain,
                   filterQuality: FilterQuality.high,
                 ),
-                Expanded(
-                  child: Center(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        TextButton(
-                          style: TextButton.styleFrom(
-                            foregroundColor: Colors.black87,
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            textStyle: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CurrentAqiScreen(),
-                              ),
-                            );
-                          },
-                          child: const Text("Home"),
-                        ),
-                        const SizedBox(
-                          height: 32,
-                          child: VerticalDivider(
-                            color: Colors.black54,
-                            thickness: 1,
-                            width: 24,
-                          ),
-                        ),
-                        TextButton(
-                          style: TextButton.styleFrom(
-                            foregroundColor: Colors.black87,
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            textStyle: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const HelpPage(),
-                              ),
-                            );
-                          },
-                          child: const Text("Learn"),
-                        ),
-                      ],
-                    ),
-                  ),
+
+                Row(
+                  children: [
+                    _buildCleanNavItem("Home", "home", () {
+                      if (widget.activePage != 'home') {
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const CurrentAqiScreen()));
+                      }
+                    }),
+                    const SizedBox(width: 16),
+                    _buildCleanNavItem("Learn", "learn", () {
+                      if (widget.activePage != 'learn') {
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const HelpPage()));
+                      }
+                    }),
+
+                    const SizedBox(width: 24),
+                    Container(height: 24, width: 1, color: Colors.grey[200]), // 
+                    const SizedBox(width: 24),
+
+                    
+                    _buildModernSearchField(),
+
+                    const SizedBox(width: 16),
+
+                    _buildModernUserControls(),
+                  ],
                 ),
-
-                const SizedBox(width: 20),
-
-                // ---------------------------
-                // TEST USER INPUT (DATABASE)
-                // ---------------------------
-                SizedBox(
-                  width: 140,
-                  height: 40,
-                  child: TextField(
-                    controller: usernameController,
-                    decoration: const InputDecoration(
-                      hintText: "username",
-                      isDense: true,
-                      border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 8,
-                      ),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(width: 8),
-
-                ElevatedButton(onPressed: openFavourites, child: const Text("Favourites")),
-
-                const SizedBox(width: 8),
-
-                if (userCreated)
-                  const Text(
-                    "Created ✅",
-                    style: TextStyle(color: Colors.green, fontSize: 12),
-                  ),
               ],
             ),
-
-      // ---------------------------
-      // ACTION BUTTONS
-      // ---------------------------
-      actions: [
-        IconButton(
-          onPressed: () {
-            setState(() {
-              isSearching = !isSearching;
-            });
-          },
-          icon: isSearching ? Icon(Icons.close) : Icon(Icons.search),
-        ),
-        if (!isSearching)
-          IconButton(
-            onPressed: () {
-              setState(() {});
-            },
-            icon: Icon(Icons.list),
           ),
-      ],
+        ),
+      ),
     );
   }
 
-  // ---------------------------
-  // FREE MAP SEARCH (UNCHANGED)
-  // ---------------------------
-  Widget get searchField {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
+  Widget _buildCleanNavItem(String title, String pageKey, VoidCallback onTap) {
+    bool isActive = widget.activePage == pageKey;
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: Text(
+          title,
+          style: TextStyle(
+            color: isActive ? Colors.black87 : Colors.grey[500],
+            fontSize: 16,
+            fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Search
+  Widget _buildModernSearchField() {
+    return SizedBox(
+      width: 500,
+      height: 40, 
       child: FmSearchField(
         selectedValue: _address,
         onSelected: _onAddressSelected,
@@ -219,15 +174,29 @@ Future<void> openFavourites() async {
             controller: controller,
             decoration: InputDecoration(
               filled: true,
-              hintText: 'Search',
-              fillColor: Colors.grey[300],
+              fillColor: Colors.grey[50], 
+              hintText: 'Search city...',
+              hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
+              prefixIcon: Icon(Icons.search_rounded, color: Colors.grey[400], size: 20),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: Colors.grey.shade200),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: Colors.grey.shade200),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
               suffixIcon: controller.text.trim().isEmpty || !focus.hasFocus
                   ? null
                   : IconButton(
-                      padding: EdgeInsets.zero,
-                      icon: const Icon(Icons.close),
+                      icon: const Icon(Icons.close_rounded, size: 18),
+                      color: Colors.grey[500],
                       onPressed: controller.clear,
-                      visualDensity: VisualDensity.compact,
                     ),
             ),
           );
@@ -236,22 +205,41 @@ Future<void> openFavourites() async {
     );
   }
 
-  // ---------------------------
-  // ADDRESS SELECT
-  // ---------------------------
-  void _onAddressSelected(FmData? data) {
-    if (data == null) return;
-
-    setState(() {
-      _address = data;
-      _currentPos = LatLng(data.lat, data.lng);
-      isSearching = false;
-    });
-
-    context.read<AqiProvider>().fetchAqiForCoordinates(data.lat, data.lng);
-  }
-
-  Future<void> getGeocode(String address) async {
-    final data = await FmService().getGeocode(address: address);
+  // Användarinmatning
+  Widget _buildModernUserControls() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          width: 120,
+          height: 40,
+          child: TextField(
+            controller: usernameController,
+            decoration: InputDecoration(
+              hintText: "@username",
+              hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
+              filled: true,
+              fillColor: Colors.grey[50],
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: Colors.grey.shade200),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        IconButton(
+          onPressed: openFavourites,
+          icon: const Icon(Icons.favorite_border_rounded, size: 26), // Tunn ikon
+          color: Colors.black87,
+          tooltip: "Favourites",
+        ),
+      ],
+    );
   }
 }

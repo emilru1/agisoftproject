@@ -14,7 +14,7 @@ class AqiProvider with ChangeNotifier {
   AqiModel? get currentData => _currentData;
   bool get isLoading => _isLoading;
 
-  final bool useMockLocation = true;
+  final bool useMockLocation = false;
 
   Future<void> refreshAqi() async {
     _isLoading = true;
