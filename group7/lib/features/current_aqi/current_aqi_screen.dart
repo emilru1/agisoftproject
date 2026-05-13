@@ -66,11 +66,12 @@ class _CurrentAqiScreenState extends State<CurrentAqiScreen> {
       );
     }
     return Scaffold(
-      appBar: Navbar(),
+      extendBodyBehindAppBar: true,
+      appBar: const Navbar(activePage: 'home'),
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          gradient: LinearGradient(
+          gradient: LinearGradient(r
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [

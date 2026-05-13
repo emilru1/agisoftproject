@@ -14,7 +14,7 @@ class HelpPage extends StatelessWidget {
     const imagePath4 = 'lib/assets/images/ungoal11.png';
     final info = jsonDecode(helpJson);
     return Scaffold(
-      appBar: const Navbar(),
+      appBar: const Navbar(activePage: 'learn'),
       body: LayoutBuilder(
         builder: (context, constraints) {
           final sidePadding = constraints.maxWidth > 1000 ? 160.0 : 32.0;
