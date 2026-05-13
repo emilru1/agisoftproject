@@ -37,7 +37,7 @@ class _DatadisplayScreenState extends State<Datadisplay> {
     final data = aqiProvider.currentData;
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
 
         const SizedBox(height: 20),
@@ -56,33 +56,13 @@ class _DatadisplayScreenState extends State<Datadisplay> {
             );
           }).toList(),
         ),
-        Category("Particles", [
+        Category("PARTICLES TODAY", [
             if (selectedFields.contains(AqiField.pm10))
-          Particlecard('PM10', data.pm10)
-          ,
-          //Text(
-          //  'PM10: ${data.pm10}',
-          //  style: const TextStyle(fontSize: 24),
-          //),
+              Particlecard('PM10', data.pm10),
 
-        if (selectedFields.contains(AqiField.pm25))
-          Particlecard('PM2.5', data.pm2_5)
-          ],),
-        Row(
-          children: [
-            if (selectedFields.contains(AqiField.pm10))
-          Particlecard('PM10', data.pm10)
-          ,
-          //Text(
-          //  'PM10: ${data.pm10}',
-          //  style: const TextStyle(fontSize: 24),
-          //),
-
-        if (selectedFields.contains(AqiField.pm25))
-          Particlecard('PM2.5', data.pm2_5)
-          ],
-        )
-        /// SHOW ONLY SELECTED DATA 
+            if (selectedFields.contains(AqiField.pm25))
+              Particlecard('PM2_5', data.pm2_5)
+          ],)
         ,
       ],
     );

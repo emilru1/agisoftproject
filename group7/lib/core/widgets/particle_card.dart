@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:group7/features/current_aqi/aqi_style.dart';
 
 class Particlecard extends StatelessWidget{
   final String title;
@@ -9,30 +10,54 @@ class Particlecard extends StatelessWidget{
   //const ParticleCard(this.title, {super.key});
   @override
   Widget build(BuildContext context) {
+    AqiStyle style = AqiStyle.fromAqi(value);
+
     return Container(
       decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.9), // Semi-transparent look
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white24),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withValues(alpha: .3),
-            blurRadius: 20, // soften the shadow
-            spreadRadius: 0, //extend the shadow
+            color: Colors.black12,
+            blurRadius: 8,
+            offset: Offset(0, 4),
           ),
         ],
       ),
-      child: Card(     
-        child: Padding(padding: EdgeInsets.all(10), 
+      child: Padding(padding: EdgeInsets.all(10), 
           child: SizedBox(
-          width: 100, height: 100, child: 
+          width: 150, height: 100, child: 
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(title, style: const TextStyle(fontSize: 20),),
-              Text("Good",style: const TextStyle(fontSize: 17),),
-              Text('$value' " μg/m3", style: const TextStyle(fontSize: 17),)
+              
+              Text('$value', style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 24, 
+                  fontWeight: FontWeight.w800,
+                ),),
+                Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: style.color.withValues(alpha: 0.2), // Subtle background
+                      borderRadius: BorderRadius.circular(6),   // Rounded corners
+                      border: Border.all(color: style.color, width: 1),
+                    ),
+                    child: Text(
+                      style.label,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 10, // Tiny font
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+              //Text("μg/m3")
             ],
           )
           ),)
-      ),
     )
     ;
   }

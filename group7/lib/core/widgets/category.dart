@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:free_map/free_map.dart';
 
 class Category extends StatelessWidget{
   final String title;
@@ -9,14 +8,40 @@ class Category extends StatelessWidget{
   
   @override
   Widget build(BuildContext context) {
+    double cardWidth = MediaQuery.of(context).size.width * 0.4;
+
     return Container(
+      width: cardWidth,
+      constraints: const BoxConstraints(maxWidth: 480, minWidth: 360),
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        border: Border.all(),
-        borderRadius: BorderRadius.all(Radius.circular(10)), 
+        color: Colors.white.withValues(alpha: 0.6), // Semi-transparent look
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white24),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 8,
+            offset: Offset(0, 4),
+          ),
+        ],
       ),
-      child: Wrap(children: children,),
-    )
-    ;
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(title),
+          SizedBox(width: 8, height: 8,),
+
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: children,
+          )
+        ],
+      )
+      
+    );
   }
 
   
