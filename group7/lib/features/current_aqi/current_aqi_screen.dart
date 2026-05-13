@@ -6,6 +6,7 @@ import 'aqi_provider.dart';
 import 'package:group7/core/widgets/pollutantText.dart';
 import 'package:group7/core/navbar.dart';
 import 'package:group7/features/user/user_provider.dart';
+import 'aqi_forecast_widget.dart';
 
 
 class CurrentAqiScreen extends StatefulWidget {
@@ -79,123 +80,141 @@ class _CurrentAqiScreenState extends State<CurrentAqiScreen> {
           ),
         ),
         child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                data.city,
-                style: const TextStyle(color: Colors.white, fontSize: 32),
-                textAlign: TextAlign.center,
-              ),
+          child: SingleChildScrollView(
+            child: LayoutBuilder(
+              builder: (context,constraints) {
 
-              Column(
-                children: [
-                  Datadisplay(),
-
-                  const SizedBox(height: 40),
-
-                  Text(
-                    data.threeDayForecast[0].date,
-                    style: const TextStyle(color: Colors.white, fontSize: 24),
-                  ),
-
-                  const SizedBox(
-                    width: 300,
-                    child: Divider(color: Colors.white, thickness: 2),
-                  ),
-
-                  const SizedBox(height: 12),
-
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(
-                      children: [
-                        _buildForecastDay(data.threeDayForecast[1]),
-                        _buildForecastDay(data.threeDayForecast[2]),
-                        _buildForecastDay(data.threeDayForecast[3]),
-                      ],
+                bool isWideEnough = constraints.maxWidth >1200;
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      data.city,
+                      style: const TextStyle(color: Colors.white, fontSize: 32),
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                ],
-              ),
 
-              IconButton(
-                icon: const Icon(Icons.refresh, color: Colors.white, size: 40),
-                onPressed: () => aqiProvider.refreshAqi(),
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  final username = context.read<UserProvider>().username;
+                    if(isWideEnough)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            children: [
+                            Datadisplay(),
+                            IconButton(
+                              icon: const Icon(Icons.refresh, color: Colors.white, size: 40),
+                              onPressed: () => aqiProvider.refreshAqi(),
+                            ),
+                            ElevatedButton(
+                              onPressed: () async {
+                                final username = context.read<UserProvider>().username;
+                        
+                                if (username == null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text("No user selected"),
+                                    ),
+                                  );
+                                  return;
+                                }
+                        
+                                try {
+                                  final result = await ApiService.createFavourite(
+                                    username: username,
+                                    lat: data.lat.toString(),
+                                    lon: data.lon.toString(),
+                                  );
+                        
+                                  print(result);
+                        
+                                  if (!context.mounted) return;
+                        
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text("Favourite added"),
+                                    ),
+                                  );
+                                } catch (e) {
+                                  print(e);
+                        
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text("Error: $e"),
+                                    ),
+                                  );
+                                }
+                              },
+                              child: const Text("Add to favourites"),
+                            ),
+                          ],
+                          ),
+                          SizedBox(width: 80,),
+                          AqiForecastWidget(forecastData: data.threeDayForecast),
+                        ],
+                      )
+                    else
+                      Column(
+                        children: [
+                            Datadisplay(),
+                            IconButton(
+                              icon: const Icon(Icons.refresh, color: Colors.white, size: 40),
+                              onPressed: () => aqiProvider.refreshAqi(),
+                            ),
+                            ElevatedButton(
+                              onPressed: () async {
+                                final username = context.read<UserProvider>().username;
+                        
+                                if (username == null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text("No user selected"),
+                                    ),
+                                  );
+                                  return;
+                                }
+                        
+                                try {
+                                  final result = await ApiService.createFavourite(
+                                    username: username,
+                                    lat: data.lat.toString(),
+                                    lon: data.lon.toString(),
+                                  );
+                        
+                                  print(result);
+                        
+                                  if (!context.mounted) return;
+                        
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text("Favourite added"),
+                                    ),
+                                  );
+                                } catch (e) {
+                                  print(e);
+                        
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text("Error: $e"),
+                                    ),
+                                  );
+                                }
+                              },
+                              child: const Text("Add to favourites"),
+                            ),
+                          SizedBox(height: 24,),
 
-                  if (username == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("No user selected"),
+                          AqiForecastWidget(forecastData: data.threeDayForecast),
+
+                        ],
+
                       ),
-                    );
-                    return;
-                  }
-
-                  try {
-                    final result = await ApiService.createFavourite(
-                      username: username,
-                      lat: data.lat.toString(),
-                      lon: data.lon.toString(),
-                    );
-
-                    print(result);
-
-                    if (!context.mounted) return;
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("Favourite added"),
-                      ),
-                    );
-                  } catch (e) {
-                    print(e);
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("Error: $e"),
-                      ),
-                    );
-                  }
-                },
-                child: const Text("Add to favourites"),
-              )
-            ],
+                  ],
+                );
+              }
+            ),
           ),
         ),
       ),
     );
   }
-}
-
-Widget _buildForecastDay(dynamic forecast) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 12),
-    child: Column(
-      children: [
-        Text(
-          forecast.date,
-          style: const TextStyle(color: Colors.white, fontSize: 20),
-        ),
-        _buildMetricRow("Avg", forecast.pm2_5.avg, forecast.pm10.avg),
-        _buildMetricRow("Max", forecast.pm2_5.max, forecast.pm10.max),
-        _buildMetricRow("Min", forecast.pm2_5.min, forecast.pm10.min),
-      ],
-    ),
-  );
-}
-
-Widget _buildMetricRow(String label, dynamic pm25, dynamic pm10) {
-  return Row(
-    children: [
-      Text("$label: ", style: const TextStyle(color: Colors.white70)),
-      PollutantText(value: pm25, subscript: "2.5"),
-      PollutantText(value: pm10, subscript: "10"),
-    ],
-  );
 }

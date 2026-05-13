@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class PollutantText extends StatelessWidget {
-  final int value;
+  final int? value;
   final String label; // "PM"
   final String subscript; 
   final double fontSize;
@@ -9,7 +9,7 @@ class PollutantText extends StatelessWidget {
 
   const PollutantText({
     super.key,
-    required this.value,
+    this.value,
     this.label = "PM",
     required this.subscript,
     this.fontSize = 18,
@@ -18,15 +18,16 @@ class PollutantText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final displayValue = value?.toString() ?? "";
     return RichText(
       text: TextSpan(
         style: TextStyle(
           color: color,
           fontSize: fontSize,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.bold,
         ),
         children: [
-          TextSpan(text: '$value $label'),
+          TextSpan(text: '$displayValue$label'),
           WidgetSpan(
             child: Transform.translate(
               offset: Offset(0, fontSize * 0.15), 
