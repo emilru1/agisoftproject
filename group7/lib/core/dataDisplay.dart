@@ -37,7 +37,7 @@ class _DatadisplayScreenState extends State<Datadisplay> {
     final data = aqiProvider.currentData;
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
 
         const SizedBox(height: 20),

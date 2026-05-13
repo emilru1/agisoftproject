@@ -12,7 +12,7 @@ class Category extends StatelessWidget{
 
     return Container(
       width: cardWidth,
-      constraints: const BoxConstraints(maxWidth: 480, minWidth: 360),
+      constraints: const BoxConstraints(minWidth: 360),
       margin: const EdgeInsets.symmetric(vertical: 10),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -28,7 +28,7 @@ class Category extends StatelessWidget{
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(title),
           SizedBox(width: 8, height: 8,),
@@ -36,7 +36,7 @@ class Category extends StatelessWidget{
           Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: children,
+            children: children + children,
           )
         ],
       )

@@ -27,7 +27,7 @@ class Particlecard extends StatelessWidget{
       ),
       child: Padding(padding: EdgeInsets.all(10), 
           child: SizedBox(
-          width: 150, height: 100, child: 
+          width: 165, height: 100, child: 
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
