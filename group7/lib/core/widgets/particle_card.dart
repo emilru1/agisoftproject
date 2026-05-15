@@ -11,8 +11,11 @@ class Particlecard extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     AqiStyle style = AqiStyle.fromAqi(value);
+    double cardWidth = MediaQuery.of(context).size.width * 0.35 /3;
 
     return Container(
+      width: cardWidth, height: 120, 
+      constraints: const BoxConstraints(minWidth: 310 / 2),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.9), // Semi-transparent look
         borderRadius: BorderRadius.circular(12),
@@ -27,7 +30,7 @@ class Particlecard extends StatelessWidget{
       ),
       child: Padding(padding: EdgeInsets.all(10), 
           child: SizedBox(
-          width: 165, height: 100, child: 
+          child: 
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -39,7 +42,7 @@ class Particlecard extends StatelessWidget{
                   fontWeight: FontWeight.w800,
                 ),),
                 Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                     decoration: BoxDecoration(
                       color: style.color.withValues(alpha: 0.2), // Subtle background
                       borderRadius: BorderRadius.circular(6),   // Rounded corners
