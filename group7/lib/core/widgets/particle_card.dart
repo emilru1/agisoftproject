@@ -11,7 +11,7 @@ class Particlecard extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     AqiStyle style = AqiStyle.fromAqi(value);
-    double cardWidth = MediaQuery.of(context).size.width * 0.35 /3;
+    double cardWidth = ((MediaQuery.of(context).size.width * 0.4) - 60 ) /3;
 
     return Container(
       width: cardWidth, height: 120, 
@@ -35,7 +35,9 @@ class Particlecard extends StatelessWidget{
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(title, style: const TextStyle(fontSize: 20),),
-              
+              Divider(
+                height: 2,           // Adjust this to match your text height
+                color: Colors.grey.withValues(alpha: 0.3), ),
               Text('$value', style: TextStyle(
                   color: Colors.black,
                   fontSize: 24, 

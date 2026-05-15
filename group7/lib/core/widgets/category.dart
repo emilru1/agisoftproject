@@ -28,7 +28,7 @@ class Category extends StatelessWidget{
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(title),
           SizedBox(width: 8, height: 8,),
