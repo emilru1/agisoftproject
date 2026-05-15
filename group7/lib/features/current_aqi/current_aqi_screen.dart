@@ -71,7 +71,7 @@ class _CurrentAqiScreenState extends State<CurrentAqiScreen> {
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          gradient: LinearGradient(r
+          gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
