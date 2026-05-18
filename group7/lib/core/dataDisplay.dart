@@ -1,6 +1,8 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:group7/core/widgets/category.dart';
+import 'package:group7/core/widgets/particle_card.dart';
 import 'package:group7/features/current_aqi/aqi_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -39,7 +41,7 @@ class _DatadisplayScreenState extends State<Datadisplay> {
       children: [
 
         const SizedBox(height: 20),
-        Text("${data!.general}", style: TextStyle(fontSize: 100, fontWeight: FontWeight.bold)),
+        Text("${data!.general}", style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold)),
         Text(data.style.description, style: TextStyle(fontSize: 12), textAlign: TextAlign.center,),
         SizedBox(height:20),
         /// FILTER BUTTONS
@@ -54,19 +56,14 @@ class _DatadisplayScreenState extends State<Datadisplay> {
             );
           }).toList(),
         ),
-        
-        /// SHOW ONLY SELECTED DATA
-        if (selectedFields.contains(AqiField.pm10))
-          Text(
-            'PM10: ${data.pm10}',
-            style: const TextStyle(fontSize: 24),
-          ),
+        Category("PARTICLES TODAY", [
+            if (selectedFields.contains(AqiField.pm10))
+              Particlecard('PM10', data.pm10),
 
-        if (selectedFields.contains(AqiField.pm25))
-          Text(
-            'PM2.5: ${data.pm2_5}',
-            style: const TextStyle(fontSize: 24),
-          ),
+            if (selectedFields.contains(AqiField.pm25))
+              Particlecard('PM2_5', data.pm2_5)
+          ],)
+        ,
       ],
     );
   }
