@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:group7/core/widgets/category.dart';
 import 'package:group7/core/widgets/particle_card.dart';
@@ -14,12 +12,8 @@ class Datadisplay extends StatefulWidget {
 }
 
 class _DatadisplayScreenState extends State<Datadisplay> {
-
   // Multiple selections
-  Set<AqiField> selectedFields = {
-    AqiField.pm10,
-    AqiField.pm25,
-  };
+  Set<AqiField> selectedFields = {AqiField.pm10, AqiField.pm25};
 
   void toggleField(AqiField field) {
     setState(() {
@@ -36,15 +30,48 @@ class _DatadisplayScreenState extends State<Datadisplay> {
     final aqiProvider = context.watch<AqiProvider>();
     final data = aqiProvider.currentData;
 
+    if (data == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        Card(
+          color: Colors.transparent,
+          elevation: 0,
+          //elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 64),
+            child: Column(
+              children: [
+                Text(
+                  data.city,
+                  style: const TextStyle(color: Colors.black, fontSize: 32),
+                  textAlign: TextAlign.center,
+                ),
+                Text(
+                  "${data.general}",
+                  style: const TextStyle(
+                    fontSize: 50,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  data.style.description,
+                  style: const TextStyle(fontSize: 12),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ),
 
-        const SizedBox(height: 20),
-        Text("${data!.general}", style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold)),
-        Text(data.style.description, style: TextStyle(fontSize: 12), textAlign: TextAlign.center,),
-        SizedBox(height:20),
-        /// FILTER BUTTONS
+        const SizedBox(height: 16),
         Wrap(
           spacing: 10,
           runSpacing: 10,
@@ -56,23 +83,19 @@ class _DatadisplayScreenState extends State<Datadisplay> {
             );
           }).toList(),
         ),
-        Category("PARTICLES TODAY", [
-            if (selectedFields.contains(AqiField.pm10))
-              Particlecard('PM10', data.pm10),
 
-            if (selectedFields.contains(AqiField.pm25))
-              Particlecard('PM2_5', data.pm2_5)
-          ],)
-        ,
+        Category("PARTICLES TODAY", [
+          if (selectedFields.contains(AqiField.pm10))
+            Particlecard('PM10', data.pm10),
+
+          if (selectedFields.contains(AqiField.pm25))
+            Particlecard('PM2_5', data.pm2_5),
+        ]),
       ],
     );
   }
 }
-enum AqiField {
-  pm10,
-  pm25,
-}
-final filters = {
-  'PM10': AqiField.pm10,
-  'PM2.5': AqiField.pm25,
-};
+
+enum AqiField { pm10, pm25 }
+
+final filters = {'PM10': AqiField.pm10, 'PM2.5': AqiField.pm25};
