@@ -94,7 +94,7 @@ class _HelpSection extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Image.asset(
                   path,
-                  height: 180,
+                  height: isSmallScreen? 140:180,
                   fit: BoxFit.contain,
                 ),
               ),
@@ -104,7 +104,7 @@ class _HelpSection extends StatelessWidget {
     } else {
       imageWidget = Image.asset(
         imagePath!,
-        height: 180,
+        height: isSmallScreen? 160:180,
         fit: BoxFit.contain,
       );
     }

@@ -62,12 +62,33 @@ class _NavbarState extends State<Navbar> {
 
   
   void _onAddressSelected(FmData? data) {
+    
+
     if (data == null) return;
-    setState(() {
+
+    if (widget.activePage == 'learn') {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => CurrentAqiScreen(
+          lat: data.lat,
+          lon: data.lng,),),
+      );
+      Future.microtask(() {
+      if (!mounted) return;
+      setState(() {
+        _address = data;
+        _currentPos = LatLng(data.lat, data.lng);
+      });
+      });
+    } else{
+        setState(() {
       _address = data;
       _currentPos = LatLng(data.lat, data.lng);
     });
+    
     context.read<AqiProvider>().fetchAqiForCoordinates(data.lat, data.lng);
+    }
+    
   }
 
   @override
