@@ -54,6 +54,7 @@ class FakeAqiProvider extends ChangeNotifier implements AqiProvider {
     general: 2,
     pm2_5: 243,
     pm10: 1,
+    co: 1,
     city: "Skövde",
     timestamp: DateTime.now(),
     threeDayForecast: [

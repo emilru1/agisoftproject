@@ -61,7 +61,10 @@ class _DatadisplayScreenState extends State<Datadisplay> {
               Particlecard('PM10', data.pm10),
 
             if (selectedFields.contains(AqiField.pm25))
-              Particlecard('PM2_5', data.pm2_5)
+              Particlecard('PM2_5', data.pm2_5),
+            Particlecard('no2', data.no2),
+            //Text(data.co.toString())
+
           ],)
         ,
       ],
