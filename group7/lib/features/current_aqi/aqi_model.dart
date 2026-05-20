@@ -21,8 +21,9 @@ class AqiModel {
   final int general;
   final int pm2_5;
   final int pm10;
-  final int no2;
-  //final double? co;
+  final int? no2;
+
+  final double? co;
   //final double? o3;
   //final int uvi;
   final String city;
@@ -38,7 +39,7 @@ class AqiModel {
     required this.pm10,
     required this.no2,
 
-    //required this.co,
+    required this.co,
     //required this.o3,  
     //required this.uvi,  
     required this.city, 
@@ -62,10 +63,14 @@ class AqiModel {
     general: json["data"]["aqi"],
     pm2_5: json["data"]["iaqi"]["pm25"]["v"],
     pm10: json["data"]["iaqi"]["pm10"]["v"],
-    no2: json["data"]["iaqi"]["no2"]["v"],
-    //co: json["data"]["iaqi"]["co"] != null
-    //    ? (json["data"]["iaqi"]["co"]["v"] as num).toDouble()
-    //    : null,
+    //no2: json["data"]["iaqi"]["no2"]["v"],
+    no2: json["data"]["iaqi"]["no2"] != null
+       ? (json["data"]["iaqi"]["no2"]["v"] as num).toInt()
+       : null,
+
+    co: json["data"]["iaqi"]["co"] != null
+       ? (json["data"]["iaqi"]["co"]["v"] as num).toDouble()
+       : null,
 
     //o3: json["data"]["iaqi"]["o3"] != null
     //   ? (json["data"]["iaqi"]["o3"]["v"] as num).toDouble()

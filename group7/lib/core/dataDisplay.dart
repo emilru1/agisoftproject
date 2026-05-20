@@ -19,6 +19,7 @@ class _DatadisplayScreenState extends State<Datadisplay> {
   Set<AqiField> selectedFields = {
     AqiField.pm10,
     AqiField.pm25,
+    AqiField.no2,
   };
 
   void toggleField(AqiField field) {
@@ -62,7 +63,11 @@ class _DatadisplayScreenState extends State<Datadisplay> {
 
             if (selectedFields.contains(AqiField.pm25))
               Particlecard('PM2_5', data.pm2_5),
-            Particlecard('no2', data.no2),
+            if (selectedFields.contains(AqiField.no2))
+                if (data.no2 != null)
+                  Particlecard('no2', data.no2!),
+            if (data.co != null)
+             Particlecard('co', data.co!.toInt()),
             //Text(data.co.toString())
 
           ],)
@@ -74,8 +79,10 @@ class _DatadisplayScreenState extends State<Datadisplay> {
 enum AqiField {
   pm10,
   pm25,
+  no2,
 }
 final filters = {
   'PM10': AqiField.pm10,
   'PM2.5': AqiField.pm25,
+  'no2': AqiField.no2,
 };
