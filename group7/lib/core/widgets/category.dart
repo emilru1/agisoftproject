@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:group7/theme/app_theme.dart';
 
-class Category extends StatelessWidget{
+class Category extends StatelessWidget {
   final String title;
   final List<Widget> children;
   const Category(this.title, this.children, {super.key});
 
-  
   @override
   Widget build(BuildContext context) {
     double cardWidth = MediaQuery.of(context).size.width * 0.4;
@@ -16,12 +16,12 @@ class Category extends StatelessWidget{
       margin: const EdgeInsets.symmetric(vertical: 10),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.6), // Semi-transparent look
+        color: AppTheme.white60, // Semi-transparent look
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white24),
+        border: Border.all(color: AppTheme.white24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black12,
+            color: AppTheme.black12,
             blurRadius: 8,
             offset: Offset(0, 4),
           ),
@@ -31,18 +31,11 @@ class Category extends StatelessWidget{
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(title),
-          SizedBox(width: 8, height: 8,),
+          SizedBox(width: 8, height: 8),
 
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: children + children,
-          )
+          Wrap(spacing: 8, runSpacing: 8, children: children + children),
         ],
-      )
-      
+      ),
     );
   }
-
-  
 }
