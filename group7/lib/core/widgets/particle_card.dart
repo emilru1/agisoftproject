@@ -3,14 +3,14 @@ import 'package:group7/features/current_aqi/aqi_style.dart';
 
 class Particlecard extends StatelessWidget{
   final String title;
-  final int value;
+  final String value;
   const Particlecard(this.title, this.value, {super.key});
 
   //String title;
   //const ParticleCard(this.title, {super.key});
   @override
   Widget build(BuildContext context) {
-    AqiStyle style = AqiStyle.fromAqi(value);
+    //AqiStyle style = AqiStyle.fromAqi(value.);
     double cardWidth = ((MediaQuery.of(context).size.width * 0.4) - 60 ) /3;
 
     return Container(
@@ -38,27 +38,27 @@ class Particlecard extends StatelessWidget{
               Divider(
                 height: 2,           // Adjust this to match your text height
                 color: Colors.grey.withValues(alpha: 0.3), ),
-              Text('$value', style: TextStyle(
+              Text(value, style: TextStyle(
                   color: Colors.black,
                   fontSize: 24, 
                   fontWeight: FontWeight.w800,
                 ),),
-                Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: style.color.withValues(alpha: 0.2), // Subtle background
-                      borderRadius: BorderRadius.circular(6),   // Rounded corners
-                      border: Border.all(color: style.color, width: 1),
-                    ),
-                    child: Text(
-                      style.label,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 10, // Tiny font
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+                // Container(
+                //     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                //     decoration: BoxDecoration(
+                //       color: style.color.withValues(alpha: 0.2), // Subtle background
+                //       borderRadius: BorderRadius.circular(6),   // Rounded corners
+                //       border: Border.all(color: style.color, width: 1),
+                //     ),
+                //     child: Text(
+                //       style.label,
+                //       style: TextStyle(
+                //         color: Colors.black,
+                //         fontSize: 10, // Tiny font
+                //         fontWeight: FontWeight.bold,
+                //       ),
+                //     ),
+                //   ),
               //Text("μg/m3")
             ],
           )

@@ -59,15 +59,17 @@ class _DatadisplayScreenState extends State<Datadisplay> {
         ),
         Category("PARTICLES TODAY", [
             if (selectedFields.contains(AqiField.pm10))
-              Particlecard('PM10', data.pm10),
+              Particlecard('PM10', data.pm10.toString()),
 
             if (selectedFields.contains(AqiField.pm25))
-              Particlecard('PM2_5', data.pm2_5),
+              Particlecard('PM2_5', data.pm2_5.toString()),
             if (selectedFields.contains(AqiField.no2))
                 if (data.no2 != null)
-                  Particlecard('no2', data.no2!),
+                  Particlecard('no2', data.no2!.toString()),
             if (data.co != null)
-             Particlecard('co', data.co!.toInt()),
+             Particlecard('co', data.co!.toString()),
+            if (data.o3 != null)
+             Particlecard('o3', data.o3!.toString()),
             //Text(data.co.toString())
 
           ],)
