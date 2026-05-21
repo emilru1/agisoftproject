@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:group7/core/widgets/pollutantText.dart';
-import 'aqi_style.dart';
 import 'package:group7/theme/app_theme.dart';
+import 'aqi_style.dart';
 
 class AqiForecastWidget extends StatelessWidget {
   final List<dynamic> forecastData;
@@ -72,25 +72,25 @@ class AqiForecastWidget extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(forecast.date, textAlign: TextAlign.left),
-              SizedBox(height: 8),
-              Divider(
-                height: 2, // Adjust this to match your text height
-                color: AppTheme.grey30,
-              ),
-              SizedBox(height: 8),
-              Row(
-                children: [
-                  Expanded(child: _buildCol("2.5", forecast.pm2_5)),
-
-                  Container(
-                    width: 2, // Thickness of the line
-                    height: 140, // Adjust this to match your text height
-                    color: Colors.grey.withValues(
-                      alpha: 0.3,
-                    ), // Space at the bottom
+              SizedBox(width: 8),
+              // The Small Rounded Label
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: style.color.withValues(
+                    alpha: 0.2,
+                  ), // Subtle background
+                  borderRadius: BorderRadius.circular(6), // Rounded corners
+                  border: Border.all(color: style.color, width: 1),
+                ),
+                child: Text(
+                  style.label,
+                  style: TextStyle(
+                    color: AppTheme.black,
+                    fontSize: 10, // Tiny font
+                    fontWeight: FontWeight.bold,
                   ),
-                ],
+                ),
               ),
             ],
           ),
@@ -103,13 +103,14 @@ class AqiForecastWidget extends StatelessWidget {
           SizedBox(height: 8),
           Row(
             children: [
-              Expanded(child: _buildCol("2_5", forecast.pm2_5)),
+              Expanded(child: _buildCol("2.5", forecast.pm2_5)),
 
               Container(
                 width: 2, // Thickness of the line
                 height: 140, // Adjust this to match your text height
                 color: AppTheme.grey30,
-              ),
+              ), // Space at the bottom
+
               SizedBox(width: 12),
 
               Expanded(child: _buildCol("10", forecast.pm10)),
