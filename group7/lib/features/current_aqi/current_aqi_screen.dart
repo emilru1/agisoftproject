@@ -59,6 +59,7 @@ class _CurrentAqiScreenState extends State<CurrentAqiScreen> {
         ),
       );
     }
+    
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: const Navbar(activePage: 'home'),
@@ -94,7 +95,13 @@ class _CurrentAqiScreenState extends State<CurrentAqiScreen> {
                                 ),
                                 onPressed: () => aqiProvider.refreshAqi(),
                               ),
-                              ElevatedButton(
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.favorite_border_rounded,
+                                  color: Colors.white,
+                                  size: 26,
+                                ),
+                                tooltip: "Add to favourites",
                                 onPressed: () async {
                                   final username = context
                                       .read<UserProvider>()
@@ -134,7 +141,6 @@ class _CurrentAqiScreenState extends State<CurrentAqiScreen> {
                                     );
                                   }
                                 },
-                                child: const Text("Add to favourites"),
                               ),
                             ],
                           ),
@@ -156,7 +162,13 @@ class _CurrentAqiScreenState extends State<CurrentAqiScreen> {
                             ),
                             onPressed: () => aqiProvider.refreshAqi(),
                           ),
-                          ElevatedButton(
+                          IconButton(
+                            icon: const Icon(
+                              Icons.favorite_border_rounded,
+                              color: Colors.white,
+                              size: 26,
+                            ),
+                            tooltip: "Add to favourites",
                             onPressed: () async {
                               final username = context
                                   .read<UserProvider>()
@@ -195,7 +207,6 @@ class _CurrentAqiScreenState extends State<CurrentAqiScreen> {
                                 );
                               }
                             },
-                            child: const Text("Add to favourites"),
                           ),
                           SizedBox(height: 24),
 
