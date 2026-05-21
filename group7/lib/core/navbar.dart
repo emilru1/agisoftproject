@@ -7,7 +7,10 @@ import 'package:provider/provider.dart';
 import 'package:group7/features/current_aqi/aqi_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:free_map/free_map.dart';
+import 'package:group7/theme/app_theme.dart';
 import 'package:group7/api-calls/http_requests.dart';
+
+class Navbar extends StatefulWidget implements PreferredSizeWidget {
   final String activePage;
 
   const Navbar({super.key, this.activePage = ''});
@@ -69,43 +72,92 @@ class _NavbarState extends State<Navbar> {
         if (!mounted) return;
         setState(() {
           _address = data;
+          _currentPos = LatLng(data.lat, data.lng);
+        });
+      });
     } else {
       setState(() {
         _address = data;
+        _currentPos = LatLng(data.lat, data.lng);
       });
 
       context.read<AqiProvider>().fetchAqiForCoordinates(data.lat, data.lng);
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+      decoration: BoxDecoration(
+        color: AppTheme.white,
+        borderRadius: const BorderRadius.vertical(
+          top: Radius.circular(20),
+          bottom: Radius.circular(20),
+        ), // Runda hörn
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.black.withValues(alpha: 0.04),
+            blurRadius: 15,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: SafeArea(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           child: ConstrainedBox(
+            constraints: BoxConstraints(
               minWidth: MediaQuery.of(context).size.width - 88,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Image.asset(
+                  'lib/assets/images/Logo2.png',
                   height: 40,
                   fit: BoxFit.contain,
+                  filterQuality: FilterQuality.high,
                 ),
+
+                Row(
                   children: [
                     _buildCleanNavItem("Home", "home", () {
                       if (widget.activePage != 'home') {
                         Navigator.pushReplacement(
+                          context,
                           MaterialPageRoute(
+                            builder: (_) => const CurrentAqiScreen(),
+                          ),
+                        );
+                      }
+                    }),
+                    const SizedBox(width: 16),
                     _buildCleanNavItem("Learn", "learn", () {
+                      if (widget.activePage != 'learn') {
                         Navigator.pushReplacement(
                           context,
+                          MaterialPageRoute(builder: (_) => const HelpPage()),
                         );
                       }
                     }),
 
                     const SizedBox(width: 24),
+                    Container(height: 24, width: 1, color: AppTheme.grey200), //
                     const SizedBox(width: 24),
 
                     _buildModernSearchField(),
 
                     const SizedBox(width: 16),
+
                     _buildModernUserControls(),
+                  ],
                 ),
+              ],
             ),
+          ),
         ),
       ),
     );
@@ -147,32 +199,36 @@ class _NavbarState extends State<Navbar> {
           textFieldBuilder: (focus, controller, onChanged) {
             return TextFormField(
               focusNode: focus,
+              onChanged: onChanged,
+              controller: controller,
+              decoration: InputDecoration(
                 filled: true,
+                fillColor: AppTheme.grey50,
                 hintText: 'Search city...',
-                hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
+                hintStyle: TextStyle(color: AppTheme.grey400, fontSize: 14),
                 prefixIcon: Icon(
                   Icons.search_rounded,
-                  color: Colors.grey[400],
+                  color: AppTheme.grey400,
                   size: 20,
                 ),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(color: Colors.grey.shade200),
+                  borderSide: BorderSide(color: AppTheme.grey300),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(color: Colors.grey.shade200),
+                  borderSide: BorderSide(color: AppTheme.grey200),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(color: Colors.grey.shade300),
+                  borderSide: BorderSide(color: AppTheme.grey300),
                 ),
                 suffixIcon: controller.text.trim().isEmpty || !focus.hasFocus
                     ? null
                     : IconButton(
                         icon: const Icon(Icons.close_rounded, size: 18),
-                        color: Colors.grey[500],
+                        color: AppTheme.grey500,
                         onPressed: controller.clear,
                       ),
               ),
@@ -195,16 +251,16 @@ class _NavbarState extends State<Navbar> {
             controller: usernameController,
             decoration: InputDecoration(
               hintText: "@username",
-              hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
+              hintStyle: TextStyle(color: AppTheme.grey400, fontSize: 14),
               filled: true,
-              fillColor: Colors.grey[50],
+              fillColor: AppTheme.grey50,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: Colors.grey.shade200),
+                borderSide: BorderSide(color: AppTheme.grey200),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: Colors.grey.shade300),
+                borderSide: BorderSide(color: AppTheme.grey300),
               ),
               contentPadding: const EdgeInsets.symmetric(horizontal: 16),
             ),
@@ -217,7 +273,7 @@ class _NavbarState extends State<Navbar> {
             Icons.favorite_border_rounded,
             size: 26,
           ), // Tunn ikon
-          color: Colors.black87,
+          color: AppTheme.black87,
           tooltip: "Favourites",
         ),
       ],
