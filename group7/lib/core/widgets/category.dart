@@ -33,7 +33,7 @@ class Category extends StatelessWidget {
           Text(title),
           SizedBox(width: 8, height: 8),
 
-          Wrap(spacing: 8, runSpacing: 8, children: children + children),
+          Wrap(spacing: 8, runSpacing: 8, children: children),
         ],
       ),
     );
