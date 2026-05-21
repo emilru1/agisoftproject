@@ -17,6 +17,9 @@ class _DatadisplayScreenState extends State<Datadisplay> {
     AqiField.pm10,
     AqiField.pm25,
     AqiField.no2,
+    AqiField.co,
+    AqiField.o3,
+    AqiField.so2,
   };
 
   void toggleField(AqiField field) {
@@ -96,12 +99,15 @@ class _DatadisplayScreenState extends State<Datadisplay> {
             if (selectedFields.contains(AqiField.no2))
                 if (data.no2 != null)
                   Particlecard('no2', data.no2!.toString()),
-            if (data.co != null)
-             Particlecard('co', data.co!.toString()),
-            if (data.o3 != null)
-             Particlecard('o3', data.o3!.toString()),
-            if (data.so2 != null)
-             Particlecard('so2', data.so2!.toString()),
+            if (selectedFields.contains(AqiField.co))
+              if (data.co != null)
+              Particlecard('co', data.co!.toString()),
+            if (selectedFields.contains(AqiField.o3))
+              if (data.o3 != null)
+              Particlecard('o3', data.o3!.toString()),
+            if (selectedFields.contains(AqiField.so2))
+              if (data.so2 != null)
+              Particlecard('so2', data.so2!.toString()),
             //Text(data.co.toString())
 
           ],)
@@ -114,9 +120,15 @@ enum AqiField {
   pm10,
   pm25,
   no2,
+  co,
+  o3,
+  so2
 }
 final filters = {
   'PM10': AqiField.pm10,
   'PM2.5': AqiField.pm25,
   'no2': AqiField.no2,
+  'co' : AqiField.co,
+  'o3' : AqiField.o3,
+  'so2' : AqiField.so2,
 };
