@@ -31,7 +31,8 @@ class Category extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(title),
-          SizedBox(width: 8, height: 8),
+          if (title != "")
+            SizedBox(width: 8, height: 8),
 
           Wrap(spacing: 8, runSpacing: 8, children: children),
         ],

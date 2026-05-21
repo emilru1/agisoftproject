@@ -79,11 +79,12 @@ class _CurrentAqiScreenState extends State<CurrentAqiScreen> {
               builder: (context, constraints) {
                 bool isWideEnough = constraints.maxWidth > 1200;
                 return Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     if (isWideEnough)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Column(
                             children: [

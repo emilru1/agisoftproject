@@ -48,10 +48,15 @@ class _DatadisplayScreenState extends State<Datadisplay> {
       if (data.o3 != null) "O3": AqiField.o3,
       if (data.so2 != null) "SO2": AqiField.so2,
     };
+    double cardWidth = MediaQuery.of(context).size.width * 0.4;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        Category("GENERAL INFO", 
+        [
+
+        
         Card(
           // color: Colors.transparent,
           // elevation: 0,
@@ -84,6 +89,7 @@ class _DatadisplayScreenState extends State<Datadisplay> {
               ],
             ),
           ),
+        ),]
         ),
 
         const SizedBox(height: 16),
