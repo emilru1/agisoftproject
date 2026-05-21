@@ -60,7 +60,7 @@ class _CurrentAqiScreenState extends State<CurrentAqiScreen> {
         ),
       );
     }
-    
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: Navbar(activePage: 'home'),
@@ -79,16 +79,8 @@ class _CurrentAqiScreenState extends State<CurrentAqiScreen> {
               builder: (context, constraints) {
                 bool isWideEnough = constraints.maxWidth > 1200;
                 return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      data.city,
-                      style: const TextStyle(
-                        color: AppTheme.white,
-                        fontSize: 32,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
                     if (isWideEnough)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
