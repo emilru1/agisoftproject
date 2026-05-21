@@ -36,7 +36,7 @@ class Category extends StatelessWidget{
           Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: children + children,
+            children: children,
           )
         ],
       )
