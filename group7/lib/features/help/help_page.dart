@@ -79,10 +79,14 @@ class _HelpSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
+    final isSmallScreen = MediaQuery.of(context).size.width < 768;
+
     Widget imageWidget;
     // If multiple images exist
     if (imagePaths != null) {
       imageWidget = Row(
+        mainAxisAlignment: isSmallScreen ? MainAxisAlignment.center : MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: imagePaths!
             .map(
@@ -90,7 +94,7 @@ class _HelpSection extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Image.asset(
                   path,
-                  height: 180,
+                  height: isSmallScreen? 140:180,
                   fit: BoxFit.contain,
                 ),
               ),
@@ -100,37 +104,61 @@ class _HelpSection extends StatelessWidget {
     } else {
       imageWidget = Image.asset(
         imagePath!,
-        height: 180,
+        height: isSmallScreen? 160:180,
         fit: BoxFit.contain,
       );
     }
 
-    final textContent = Expanded(
+
+    final textContent = Center(
       child: Column(
-        crossAxisAlignment: imageOnLeft
-            ? CrossAxisAlignment.start
-            : CrossAxisAlignment.end,
+        crossAxisAlignment: isSmallScreen
+          ? CrossAxisAlignment.center // Centered layout on mobile
+          : (imageOnLeft ? CrossAxisAlignment.start : CrossAxisAlignment.end),
         children: [
           Text(
             title,
-            textAlign: imageOnLeft ? TextAlign.left : TextAlign.right,
+            textAlign: isSmallScreen
+              ? TextAlign.center
+              : (imageOnLeft ? TextAlign.left : TextAlign.right),
             style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 12),
           Text(
             text,
-            textAlign: imageOnLeft ? TextAlign.left : TextAlign.right,
+            textAlign: isSmallScreen
+              ? TextAlign.center
+              : (imageOnLeft ? TextAlign.left : TextAlign.right),
             style: const TextStyle(fontSize: 18, height: 1.4),
           ),
         ],
       ),
     );
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: imageOnLeft
-          ? [imageWidget, const SizedBox(width: 40), textContent]
-          : [textContent, const SizedBox(width: 40), imageWidget],
-    );
+    if (isSmallScreen) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Center(child: imageWidget),
+          const SizedBox(height: 24),
+          textContent 
+        ],
+      );
+    } else {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: imageOnLeft
+            ? [
+                imageWidget,
+                const SizedBox(width:40),
+                Expanded(child: textContent),
+              ]
+            : [
+                Expanded(child: textContent),
+                const SizedBox(width:40),
+                imageWidget
+              ],
+      );
+    }
   }
 }

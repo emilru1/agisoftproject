@@ -100,7 +100,7 @@ class AqiForecastWidget extends StatelessWidget {
               SizedBox(height: 8,),
               Row(
                 children: [
-                  Expanded(child:_buildCol("2_5", forecast.pm2_5)),
+                  Expanded(child:_buildCol("2.5", forecast.pm2_5)),
                   
       
                   Container(

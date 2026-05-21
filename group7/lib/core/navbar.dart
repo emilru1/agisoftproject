@@ -62,12 +62,33 @@ class _NavbarState extends State<Navbar> {
 
   
   void _onAddressSelected(FmData? data) {
+    
+
     if (data == null) return;
-    setState(() {
+
+    if (widget.activePage == 'learn') {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => CurrentAqiScreen(
+          lat: data.lat,
+          lon: data.lng,),),
+      );
+      Future.microtask(() {
+      if (!mounted) return;
+      setState(() {
+        _address = data;
+        _currentPos = LatLng(data.lat, data.lng);
+      });
+      });
+    } else{
+        setState(() {
       _address = data;
       _currentPos = LatLng(data.lat, data.lng);
     });
+    
     context.read<AqiProvider>().fetchAqiForCoordinates(data.lat, data.lng);
+    }
+    
   }
 
   @override
@@ -157,50 +178,53 @@ class _NavbarState extends State<Navbar> {
 
   // Search
   Widget _buildModernSearchField() {
-    return SizedBox(
-      width: 500,
-      height: 40, 
-      child: FmSearchField(
-        selectedValue: _address,
-        onSelected: _onAddressSelected,
-        searchParams: const FmSearchParams(),
-        resultViewOptions: FmResultViewOptions(
-          onOverlayVisible: (v) => setState(() => _isOverlayVisible = v),
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: 600),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.4,
+        height: 40, 
+        child: FmSearchField(
+          selectedValue: _address,
+          onSelected: _onAddressSelected,
+          searchParams: const FmSearchParams(),
+          resultViewOptions: FmResultViewOptions(
+            onOverlayVisible: (v) => setState(() => _isOverlayVisible = v),
+          ),
+          textFieldBuilder: (focus, controller, onChanged) {
+            return TextFormField(
+              focusNode: focus,
+              onChanged: onChanged,
+              controller: controller,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.grey[50], 
+                hintText: 'Search city...',
+                hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
+                prefixIcon: Icon(Icons.search_rounded, color: Colors.grey[400], size: 20),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide(color: Colors.grey.shade200),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide(color: Colors.grey.shade200),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide(color: Colors.grey.shade300),
+                ),
+                suffixIcon: controller.text.trim().isEmpty || !focus.hasFocus
+                    ? null
+                    : IconButton(
+                        icon: const Icon(Icons.close_rounded, size: 18),
+                        color: Colors.grey[500],
+                        onPressed: controller.clear,
+                      ),
+              ),
+            );
+          },
         ),
-        textFieldBuilder: (focus, controller, onChanged) {
-          return TextFormField(
-            focusNode: focus,
-            onChanged: onChanged,
-            controller: controller,
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.grey[50], 
-              hintText: 'Search city...',
-              hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
-              prefixIcon: Icon(Icons.search_rounded, color: Colors.grey[400], size: 20),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: Colors.grey.shade200),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: Colors.grey.shade200),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: Colors.grey.shade300),
-              ),
-              suffixIcon: controller.text.trim().isEmpty || !focus.hasFocus
-                  ? null
-                  : IconButton(
-                      icon: const Icon(Icons.close_rounded, size: 18),
-                      color: Colors.grey[500],
-                      onPressed: controller.clear,
-                    ),
-            ),
-          );
-        },
       ),
     );
   }
