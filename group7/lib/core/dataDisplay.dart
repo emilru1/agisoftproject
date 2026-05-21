@@ -13,8 +13,15 @@ class Datadisplay extends StatefulWidget {
 
 class _DatadisplayScreenState extends State<Datadisplay> {
   // Multiple selections
-  Set<AqiField> selectedFields = {AqiField.pm10, AqiField.pm25};
-
+  Set<AqiField> selectedFields = {
+    AqiField.pm10,
+    AqiField.pm25,
+    AqiField.no2,
+    AqiField.co,
+    AqiField.o3,
+    AqiField.so2,
+  };
+  
   void toggleField(AqiField field) {
     setState(() {
       if (selectedFields.contains(field)) {
@@ -33,6 +40,14 @@ class _DatadisplayScreenState extends State<Datadisplay> {
     if (data == null) {
       return const Center(child: CircularProgressIndicator());
     }
+    final Map<String, AqiField> availableFilters = {
+      if (data.pm10 != null) "PM10": AqiField.pm10,
+      if (data.pm2_5 != null) "PM2.5": AqiField.pm25,
+      if (data.no2 != null) "NO2": AqiField.no2,
+      if (data.co != null) "CO": AqiField.co,
+      if (data.o3 != null) "O3": AqiField.o3,
+      if (data.so2 != null) "SO2": AqiField.so2,
+    };
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -75,7 +90,7 @@ class _DatadisplayScreenState extends State<Datadisplay> {
         Wrap(
           spacing: 10,
           runSpacing: 10,
-          children: filters.entries.map((entry) {
+          children: availableFilters.entries.map((entry) {
             return FilterChip(
               label: Text(entry.key),
               selected: selectedFields.contains(entry.value),
@@ -83,19 +98,45 @@ class _DatadisplayScreenState extends State<Datadisplay> {
             );
           }).toList(),
         ),
-
         Category("PARTICLES TODAY", [
-          if (selectedFields.contains(AqiField.pm10))
-            Particlecard('PM10', data.pm10),
+            if (selectedFields.contains(AqiField.pm10))
+              Particlecard('PM10', data.pm10.toString()),
 
-          if (selectedFields.contains(AqiField.pm25))
-            Particlecard('PM2_5', data.pm2_5),
-        ]),
+            if (selectedFields.contains(AqiField.pm25))
+              Particlecard('PM2_5', data.pm2_5.toString()),
+            if (selectedFields.contains(AqiField.no2))
+                if (data.no2 != null)
+                  Particlecard('no2', data.no2!.toString()),
+            if (selectedFields.contains(AqiField.co))
+              if (data.co != null)
+              Particlecard('co', data.co!.toString()),
+            if (selectedFields.contains(AqiField.o3))
+              if (data.o3 != null)
+              Particlecard('o3', data.o3!.toString()),
+            if (selectedFields.contains(AqiField.so2))
+              if (data.so2 != null)
+              Particlecard('so2', data.so2!.toString()),
+            //Text(data.co.toString())
+
+          ],)
+        ,
       ],
     );
   }
 }
-
-enum AqiField { pm10, pm25 }
-
-final filters = {'PM10': AqiField.pm10, 'PM2.5': AqiField.pm25};
+enum AqiField {
+  pm10,
+  pm25,
+  no2,
+  co,
+  o3,
+  so2
+}
+final filters = {
+  'PM10': AqiField.pm10,
+  'PM2.5': AqiField.pm25,
+  'no2': AqiField.no2,
+  'co' : AqiField.co,
+  'o3' : AqiField.o3,
+  'so2' : AqiField.so2,
+};
