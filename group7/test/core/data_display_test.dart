@@ -65,7 +65,7 @@ class FakeAqiProvider extends ChangeNotifier implements AqiProvider {
       )
     ],
     lat: 2,
-    lon: 2,
+    lon: 2, no2: 0, o3: 0, so2: 0,
   );
 
   @override
