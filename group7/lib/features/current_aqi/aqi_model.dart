@@ -25,6 +25,7 @@ class AqiModel {
 
   final double? co;
   final double? o3;
+  final double? so2;
   //final int uvi;
   final String city;
   final DateTime timestamp;
@@ -41,6 +42,7 @@ class AqiModel {
 
     required this.co,
     required this.o3,  
+    required this.so2,  
     //required this.uvi,  
     required this.city, 
     required this.timestamp,
@@ -74,6 +76,9 @@ class AqiModel {
 
     o3: json["data"]["iaqi"]["o3"] != null
       ? (json["data"]["iaqi"]["o3"]["v"] as num).toDouble()
+       : null,
+    so2: json["data"]["iaqi"]["so2"] != null
+      ? (json["data"]["iaqi"]["so2"]["v"] as num).toDouble()
        : null,
     //uvi: json["data"]["iaqi"],
     city: json["data"]["city"]["name"],

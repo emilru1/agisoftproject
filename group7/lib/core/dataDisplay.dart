@@ -70,6 +70,8 @@ class _DatadisplayScreenState extends State<Datadisplay> {
              Particlecard('co', data.co!.toString()),
             if (data.o3 != null)
              Particlecard('o3', data.o3!.toString()),
+            if (data.so2 != null)
+             Particlecard('so2', data.so2!.toString()),
             //Text(data.co.toString())
 
           ],)
