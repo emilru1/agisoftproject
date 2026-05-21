@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:group7/theme/app_theme.dart';
 
 class PollutantText extends StatelessWidget {
   final int? value;
   final String label; // "PM"
-  final String subscript; 
+  final String subscript;
   final double fontSize;
   final Color color;
 
@@ -13,7 +14,7 @@ class PollutantText extends StatelessWidget {
     this.label = "PM",
     required this.subscript,
     this.fontSize = 18,
-    this.color = Colors.white,
+    this.color = AppTheme.white,
   });
 
   @override
@@ -30,12 +31,12 @@ class PollutantText extends StatelessWidget {
           TextSpan(text: '$displayValue$label'),
           WidgetSpan(
             child: Transform.translate(
-              offset: Offset(0, fontSize * 0.15), 
+              offset: Offset(0, fontSize * 0.15),
               child: Text(
                 subscript,
                 style: TextStyle(
                   color: color,
-                  fontSize: fontSize * 0.6, 
+                  fontSize: fontSize * 0.6,
                   fontWeight: FontWeight.bold,
                 ),
               ),

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:group7/features/current_aqi/aqi_style.dart';
+import 'package:group7/theme/app_theme.dart';
 
-class Particlecard extends StatelessWidget{
+class Particlecard extends StatelessWidget {
   final String title;
   final String value;
   const Particlecard(this.title, this.value, {super.key});
@@ -14,27 +15,28 @@ class Particlecard extends StatelessWidget{
     double cardWidth = ((MediaQuery.of(context).size.width * 0.4) - 60 ) /3;
 
     return Container(
-      width: cardWidth, height: 120, 
+      width: cardWidth,
+      height: 120,
       constraints: const BoxConstraints(minWidth: 310 / 2),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.9), // Semi-transparent look
+        color: AppTheme.white90, // Semi-transparent look
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white24),
+        border: Border.all(color: AppTheme.white24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black12,
+            color: AppTheme.black12,
             blurRadius: 8,
             offset: Offset(0, 4),
           ),
         ],
       ),
-      child: Padding(padding: EdgeInsets.all(10), 
-          child: SizedBox(
-          child: 
-          Column(
+      child: Padding(
+        padding: EdgeInsets.all(10),
+        child: SizedBox(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: const TextStyle(fontSize: 20),),
+              Text(title, style: const TextStyle(fontSize: 20)),
               Divider(
                 height: 2,           // Adjust this to match your text height
                 color: Colors.grey.withValues(alpha: 0.3), ),
@@ -61,9 +63,9 @@ class Particlecard extends StatelessWidget{
                 //   ),
               //Text("μg/m3")
             ],
-          )
-          ),)
-    )
-    ;
+          ),
+        ),
+      ),
+    );
   }
 }

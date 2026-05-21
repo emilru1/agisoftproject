@@ -7,6 +7,7 @@ import 'package:group7/core/widgets/pollutantText.dart';
 import 'package:group7/core/navbar.dart';
 import 'package:group7/features/user/user_provider.dart';
 import 'aqi_forecast_widget.dart';
+import 'package:group7/theme/app_theme.dart';
 
 class CurrentAqiScreen extends StatefulWidget {
   final double? lat;
@@ -62,7 +63,7 @@ class _CurrentAqiScreenState extends State<CurrentAqiScreen> {
     
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: const Navbar(activePage: 'home'),
+      appBar: Navbar(activePage: 'home'),
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
@@ -80,6 +81,14 @@ class _CurrentAqiScreenState extends State<CurrentAqiScreen> {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    Text(
+                      data.city,
+                      style: const TextStyle(
+                        color: AppTheme.white,
+                        fontSize: 32,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                     if (isWideEnough)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -90,7 +99,7 @@ class _CurrentAqiScreenState extends State<CurrentAqiScreen> {
                               IconButton(
                                 icon: const Icon(
                                   Icons.refresh,
-                                  color: Colors.white,
+                                  color: AppTheme.white,
                                   size: 40,
                                 ),
                                 onPressed: () => aqiProvider.refreshAqi(),
@@ -157,7 +166,7 @@ class _CurrentAqiScreenState extends State<CurrentAqiScreen> {
                           IconButton(
                             icon: const Icon(
                               Icons.refresh,
-                              color: Colors.white,
+                              color: AppTheme.white,
                               size: 40,
                             ),
                             onPressed: () => aqiProvider.refreshAqi(),

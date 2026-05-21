@@ -19,7 +19,7 @@ class Navbar extends StatefulWidget implements PreferredSizeWidget {
   State<Navbar> createState() => _NavbarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(80); 
+  Size get preferredSize => const Size.fromHeight(80);
 }
 
 class _NavbarState extends State<Navbar> {
@@ -51,56 +51,53 @@ class _NavbarState extends State<Navbar> {
       context.read<UserProvider>().setUsername(username);
       Navigator.push(
         context,
-        MaterialPageRoute(
-          builder: (_) => FavouritesPage(username: username),
-        ),
+        MaterialPageRoute(builder: (_) => FavouritesPage(username: username)),
       );
     } catch (e) {
       print("Error: $e");
     }
   }
 
-  
   void _onAddressSelected(FmData? data) {
-    
-
     if (data == null) return;
 
     if (widget.activePage == 'learn') {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => CurrentAqiScreen(
-          lat: data.lat,
-          lon: data.lng,),),
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => CurrentAqiScreen(lat: data.lat, lon: data.lng),
+        ),
       );
       Future.microtask(() {
-      if (!mounted) return;
+        if (!mounted) return;
+        setState(() {
+          _address = data;
+          _currentPos = LatLng(data.lat, data.lng);
+        });
+      });
+    } else {
       setState(() {
         _address = data;
         _currentPos = LatLng(data.lat, data.lng);
       });
-      });
-    } else{
-        setState(() {
-      _address = data;
-      _currentPos = LatLng(data.lat, data.lng);
-    });
-    
-    context.read<AqiProvider>().fetchAqiForCoordinates(data.lat, data.lng);
+
+      context.read<AqiProvider>().fetchAqiForCoordinates(data.lat, data.lng);
     }
-    
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(20, 10, 20, 0), 
+      margin: const EdgeInsets.fromLTRB(20, 10, 20, 0),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(20), bottom: Radius.circular(20)), // Runda hörn
+        color: AppTheme.white,
+        borderRadius: const BorderRadius.vertical(
+          top: Radius.circular(20),
+          bottom: Radius.circular(20),
+        ), // Runda hörn
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: AppTheme.black.withValues(alpha: 0.04),
             blurRadius: 15,
             offset: const Offset(0, 4),
           ),
@@ -112,7 +109,9 @@ class _NavbarState extends State<Navbar> {
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           child: ConstrainedBox(
-            constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width - 88), 
+            constraints: BoxConstraints(
+              minWidth: MediaQuery.of(context).size.width - 88,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -127,21 +126,28 @@ class _NavbarState extends State<Navbar> {
                   children: [
                     _buildCleanNavItem("Home", "home", () {
                       if (widget.activePage != 'home') {
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const CurrentAqiScreen()));
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const CurrentAqiScreen(),
+                          ),
+                        );
                       }
                     }),
                     const SizedBox(width: 16),
                     _buildCleanNavItem("Learn", "learn", () {
                       if (widget.activePage != 'learn') {
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const HelpPage()));
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (_) => const HelpPage()),
+                        );
                       }
                     }),
 
                     const SizedBox(width: 24),
-                    Container(height: 24, width: 1, color: Colors.grey[200]), // 
+                    Container(height: 24, width: 1, color: AppTheme.grey200), //
                     const SizedBox(width: 24),
 
-                    
                     _buildModernSearchField(),
 
                     const SizedBox(width: 16),
@@ -167,7 +173,7 @@ class _NavbarState extends State<Navbar> {
         child: Text(
           title,
           style: TextStyle(
-            color: isActive ? Colors.black87 : Colors.grey[500],
+            color: isActive ? AppTheme.black87 : AppTheme.grey500,
             fontSize: 16,
             fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
           ),
@@ -182,7 +188,7 @@ class _NavbarState extends State<Navbar> {
       constraints: BoxConstraints(maxWidth: 600),
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.4,
-        height: 40, 
+        height: 40,
         child: FmSearchField(
           selectedValue: _address,
           onSelected: _onAddressSelected,
@@ -197,28 +203,32 @@ class _NavbarState extends State<Navbar> {
               controller: controller,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.grey[50], 
+                fillColor: AppTheme.grey50,
                 hintText: 'Search city...',
-                hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
-                prefixIcon: Icon(Icons.search_rounded, color: Colors.grey[400], size: 20),
+                hintStyle: TextStyle(color: AppTheme.grey400, fontSize: 14),
+                prefixIcon: Icon(
+                  Icons.search_rounded,
+                  color: AppTheme.grey400,
+                  size: 20,
+                ),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(color: Colors.grey.shade200),
+                  borderSide: BorderSide(color: AppTheme.grey300),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(color: Colors.grey.shade200),
+                  borderSide: BorderSide(color: AppTheme.grey200),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(color: Colors.grey.shade300),
+                  borderSide: BorderSide(color: AppTheme.grey300),
                 ),
                 suffixIcon: controller.text.trim().isEmpty || !focus.hasFocus
                     ? null
                     : IconButton(
                         icon: const Icon(Icons.close_rounded, size: 18),
-                        color: Colors.grey[500],
+                        color: AppTheme.grey500,
                         onPressed: controller.clear,
                       ),
               ),
@@ -241,16 +251,16 @@ class _NavbarState extends State<Navbar> {
             controller: usernameController,
             decoration: InputDecoration(
               hintText: "@username",
-              hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
+              hintStyle: TextStyle(color: AppTheme.grey400, fontSize: 14),
               filled: true,
-              fillColor: Colors.grey[50],
+              fillColor: AppTheme.grey50,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: Colors.grey.shade200),
+                borderSide: BorderSide(color: AppTheme.grey200),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: Colors.grey.shade300),
+                borderSide: BorderSide(color: AppTheme.grey300),
               ),
               contentPadding: const EdgeInsets.symmetric(horizontal: 16),
             ),
@@ -259,8 +269,11 @@ class _NavbarState extends State<Navbar> {
         const SizedBox(width: 8),
         IconButton(
           onPressed: openFavourites,
-          icon: const Icon(Icons.favorite_border_rounded, size: 26), // Tunn ikon
-          color: Colors.black87,
+          icon: const Icon(
+            Icons.favorite_border_rounded,
+            size: 26,
+          ), // Tunn ikon
+          color: AppTheme.black87,
           tooltip: "Favourites",
         ),
       ],
