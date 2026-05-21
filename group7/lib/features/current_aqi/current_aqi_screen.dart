@@ -59,6 +59,7 @@ class _CurrentAqiScreenState extends State<CurrentAqiScreen> {
         ),
       );
     }
+    
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: const Navbar(activePage: 'home'),
